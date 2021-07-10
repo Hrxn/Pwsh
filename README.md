@@ -1,2 +1,6 @@
 # pwsh
-Porting my stuff to PowerShell..yay.
+Starting with some simple examples..
+
+This is still a work-in-progress.
+All usual disclaimers apply etc. pp.
+
