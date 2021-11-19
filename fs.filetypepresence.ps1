@@ -37,5 +37,5 @@ foreach ($Type in $Exts) {
 	Write-Host $Type
 }
 Write-Host "----------------------------------------------------------------"
-Write-Host "Total files: $Size"
+Write-Host "Total Files: $Size"
 Write-Host "--------------------------------"
