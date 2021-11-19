@@ -1,5 +1,5 @@
 if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
-	Write-Host "[fs.ffvimg] Usage: fs.ffvimg <filename> <start position in seconds> [<duration to process in seconds>]"
+	Write-Host "[fs.ffvimg] Usage: fs.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]"
 } else {
 	$file = Get-Item $args[0]
 	$name = $file.BaseName
