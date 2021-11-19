@@ -2,6 +2,7 @@ param(
 	[Switch] $Recurse,
 	[String] $Path
 )
+
 if ([String]::IsNullOrEmpty($Path)) {
 	Write-Host "[fs.filetypepresence] Usage: fs.filetypepresence.ps1 <PATH>"
 	exit 1
@@ -36,3 +37,5 @@ foreach ($Type in $Exts) {
 	Write-Host $Type
 }
 Write-Host "----------------------------------------------------------------"
+Write-Host "Total files: $Size"
+Write-Host "--------------------------------"
