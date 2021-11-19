@@ -4,12 +4,12 @@ param(
 )
 
 if ([String]::IsNullOrEmpty($Path)) {
-	Write-Host "[fs.filetypepresence] Usage: fs.filetypepresence.ps1 <PATH>"
+	Write-Host "[fs.filetypepresence] Usage: fs.filetypepresence.ps1 [-Path] <PATH> [-Recurse]"
 	exit 1
 }
 
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
-	Write-Host "[fs.filetypepresence] Given <PATH> does not exist or is not a valid path"
+	Write-Host "[fs.filetypepresence] The given path parameter $Path does not exist or is not a valid path"
 	exit 2
 }
 
