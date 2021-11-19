@@ -1,15 +1,23 @@
-if ($args[0] -eq $null) {
+param(
+	[Switch] $Recurse,
+	[String] $Path
+)
+if ([String]::IsNullOrEmpty($Path)) {
 	Write-Host "[fs.filetypepresence] Usage: fs.filetypepresence.ps1 <PATH>"
 	exit 1
 }
 
-if (-not (Test-Path -LiteralPath $args[0] -PathType Container)) {
+if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 	Write-Host "[fs.filetypepresence] Given <PATH> does not exist or is not a valid path"
 	exit 2
 }
 
-$Path = Resolve-Path -LiteralPath $args[0]
-$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
+$Path = Resolve-Path -LiteralPath $Path
+if ($Recurse) {
+	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
+} else {
+	$Full = Get-ChildItem -LiteralPath $Path -Force -File
+}
 $Size = $Full.Count
 $Exts = [System.Collections.Generic.List[String]]::new()
 
