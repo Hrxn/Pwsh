@@ -14,6 +14,6 @@ if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
 		Remove-Item -LiteralPath $Name -Recurse -Force
 	}
 	New-Item -Path "." -Name $Name -ItemType Directory
-	& "ffmpeg.exe" -ss $tcst -t $tcen -i $File -c:v png ./$name/%08d.png
+	& ffmpeg.exe -ss $tcst -t $tcen -i $File -c:v png ./$name/%08d.png
 }
 
