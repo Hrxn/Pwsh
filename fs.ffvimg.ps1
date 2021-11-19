@@ -16,4 +16,3 @@ if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
 	New-Item -Path "." -Name $Name -ItemType Directory
 	& ffmpeg.exe -ss $tcst -t $tcen -i $File -c:v png ./$name/%08d.png
 }
-
