@@ -31,4 +31,3 @@ foreach ($Read in [System.IO.File]::ReadLines($File)) {
 	}
 	Write-Progress -Activity "Infile handling in progress..." -Status "Processing of $Size entries - Done: $Cntr" -PercentComplete (($Cntr / $Size) * 100)
 }
-
