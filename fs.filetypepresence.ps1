@@ -9,7 +9,7 @@ if ([String]::IsNullOrEmpty($Path)) {
 }
 
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
-	Write-Host "[fs.filetypepresence] The given path parameter $Path does not exist or is not a valid path"
+	Write-Host "[fs.filetypepresence] The given path parameter [$Path] does not exist or is not a valid path"
 	exit 2
 }
 
