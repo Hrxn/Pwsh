@@ -1,6 +1,6 @@
 param(
-	[Switch] $Recurse,
-	[String] $Path
+	[String] $Path,
+	[Switch] $Recurse
 )
 
 if ([String]::IsNullOrEmpty($Path)) {
