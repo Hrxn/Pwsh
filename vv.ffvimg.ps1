@@ -1,5 +1,5 @@
 if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
-	Write-Host "[fs.ffvimg] Usage: fs.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]"
+	Write-Host "[vv.ffvimg] Usage: fs.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]"
 } else {
 	$File = Get-Item $args[0]
 	$Name = $file.BaseName
@@ -10,9 +10,9 @@ if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
 		$tcen = 2
 	}
 	if (Test-Path -LiteralPath $Name -PathType Container) {
-		Write-Host "[fs.ffvimg] Info: Deleting previously existing directory `"$Name`" ... "
+		Write-Host "[vv.ffvimg] Info: Deleting previously existing directory `"$Name`" ... "
 		Remove-Item -LiteralPath $Name -Recurse -Force
 	}
 	New-Item -Path "." -Name $Name -ItemType Directory
-	& ffmpeg.exe -ss $tcst -t $tcen -i $File -c:v png ./$name/%08d.png
+	& ffmpeg -ss $tcst -t $tcen -i $File -c:v png ./$name/%08d.png
 }
