@@ -1,7 +1,7 @@
 Write-Host -ForegroundColor White '[MNTNC] : Simple Cleaning Script -> Now Running...'
 $ErrActPreferenceSaved = $ErrorActionPreference
 $ConfrmPreferenceSaved = $ConfirmPreference
-$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Continue
 $ConfirmPreference = [System.Management.Automation.ConfirmImpact]::None
 
 Write-Host -ForegroundColor DarkGray '[01/03] : Cleaning System Temp directory in %Windir%'
