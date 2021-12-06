@@ -31,6 +31,6 @@ Write-Host -ForegroundColor White '[MNTNC] : Simple Cleaning Script -> Cleaned a
 Write-Host -ForegroundColor DarkGray "   $    : $($ItemA.Count + $ItemB.Count + $ItemC.Count + $ItemD.Count) item(s) removed in total!"
 $ErrorActionPreference = $ErrActPreferenceSaved
 $ConfirmPreference = $ConfrmPreferenceSaved
-Remove-Variable -Name 'ErrActPreferenceSaved','ConfrmPreferenceSaved','ItemA','ItemB','ItemC','ItemD'
+Remove-Variable -Name ErrActPreferenceSaved,ConfrmPreferenceSaved,ItemA,ItemB,ItemC,ItemD
 Write-Host -ForegroundColor White "[MNTNC] : Simple Cleaning Script $($PSStyle.Italic)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
 
