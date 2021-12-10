@@ -63,10 +63,10 @@ function Total-Print {
 function Count-Items {
 	param($Item)
 	switch ($Item) {
-		{$Item -is [System.Object[]]}			{$Retv = [UInt32] $Item.Count; break}
-		{$Item -is [System.IO.DirectoryInfo]}	{$Retv = [UInt32] 1; break}
-		{$Item -is [System.IO.FileInfo]}		{$Retv = [UInt32] 1; break}
-		{$Item -eq $null}						{$Retv = [Uint32] 0}
+		{$Item -is [System.Object[]]}         {$Retv = [UInt32] $Item.Count; break}
+		{$Item -is [System.IO.DirectoryInfo]} {$Retv = [UInt32] 1; break}
+		{$Item -is [System.IO.FileInfo]}      {$Retv = [UInt32] 1; break}
+		{$Item -eq $null}                     {$Retv = [Uint32] 0}
 	}
 	return $Retv
 }
