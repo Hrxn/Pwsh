@@ -6,7 +6,7 @@ $ScndColor = [System.ConsoleColor]::DarkGray
 
 # --------------------------------------------------------- Function Definitions --------------------------------------------------------- #
 function Print-Unava {
-	$InfMsg = "   !    : Could not delete some items in '$(Get-Location)', access not authorized. Try an elevated shell."
+	$InfMsg = "   !    : Could not delete some items in '$(Get-Location)', access not available. May be in use. Or try an elevated shell."
 	Write-Host -Object $InfMsg -ForegroundColor 'DarkRed'
 }
 
@@ -183,6 +183,7 @@ if (Test-Path -LiteralPath $PathParam -PathType Container) {
 	$Items04b = Get-ChildItem -Path "tw-*.tmp" -Force
 	$CountPost04a, $CountPost04b = (Count-Items $Items04a), (Count-Items $Items04b)
 	$Result04 = ($CountInit04a + $CountInit04b) - ($CountPost04a + $CountPost04b)
+	Set-Location
 	Pop-Location -StackName 'Stack04'
 }
 else {
