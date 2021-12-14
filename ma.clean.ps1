@@ -196,12 +196,12 @@ $StatusMsg = "[MNTNC] : Simple Cleaning Script -> Cleaned all the things!"
 Write-Host -Object $StatusMsg -ForegroundColor $PrimColor
 $TotalRmvd = (Get-Variable -Name "Result*" -ValueOnly | Measure-Object -Sum).Sum
 Total-Print -Output $TotalRmvd
-$StatusMsg = "[MNTNC] : Simple Cleaning Script $($PSStyle.Italic)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
-Write-Host -Object $StatusMsg -ForegroundColor $PrimColor
 
 $ErrorActionPreference = $ErrActPrefSaved
 $ConfirmPreference = $ConfrmPrefSaved
 Remove-Variable -Name "Result*", "Items*", "CountInit*", "CountPost*"
 Remove-Variable -Name 'ErrActPrefSaved', 'ConfrmPrefSaved', 'StatusVal', 'StatusMsg', 'TotalRmvd', 'PathParam', 'PrimColor', 'ScndColor'
 
+$StatusMsg = "[MNTNC] : Simple Cleaning Script $($PSStyle.Italic)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
+Write-Host -Object $StatusMsg -ForegroundColor $PrimColor
 # --------------------------------------------------------------- End Main --------------------------------------------------------------- #
