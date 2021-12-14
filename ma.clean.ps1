@@ -61,12 +61,12 @@ function Total-Print {
 }
 
 function Count-Items {
-	param($Item)
-	switch ($Item) {
-		{$Item -is [System.Object[]]}         {$Retv = [UInt32] $Item.Count; break}
-		{$Item -is [System.IO.DirectoryInfo]} {$Retv = [UInt32] 1; break}
-		{$Item -is [System.IO.FileInfo]}      {$Retv = [UInt32] 1; break}
-		{$Item -eq $null}                     {$Retv = [Uint32] 0}
+	param($Input)
+	switch ($Input) {
+		{$Input -is [System.Object[]]}         {$Retv = [UInt32] $Input.Count; break}
+		{$Input -is [System.IO.DirectoryInfo]} {$Retv = [UInt32] 1; break}
+		{$Input -is [System.IO.FileInfo]}      {$Retv = [UInt32] 1; break}
+		{$Input -eq $null}                     {$Retv = [Uint32] 0}
 	}
 	return $Retv
 }
@@ -183,7 +183,6 @@ if (Test-Path -LiteralPath $PathParam -PathType Container) {
 	$Items04b = Get-ChildItem -Path "tw-*.tmp" -Force
 	$CountPost04a, $CountPost04b = (Count-Items $Items04a), (Count-Items $Items04b)
 	$Result04 = ($CountInit04a + $CountInit04b) - ($CountPost04a + $CountPost04b)
-	Set-Location
 	Pop-Location -StackName 'Stack04'
 }
 else {
