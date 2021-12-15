@@ -61,12 +61,12 @@ function Total-Print {
 }
 
 function Count-Items {
-	param($Input)
-	switch ($Input) {
-		{$Input -is [System.Object[]]}         {$Retv = [UInt32] $Input.Count; break}
-		{$Input -is [System.IO.DirectoryInfo]} {$Retv = [UInt32] 1; break}
-		{$Input -is [System.IO.FileInfo]}      {$Retv = [UInt32] 1; break}
-		{$Input -eq $null}                     {$Retv = [Uint32] 0}
+	param($Probe)
+	switch ($Probe) {
+		{$Probe -is [System.Object[]]}         {$Retv = [UInt32] $Probe.Count; break}
+		{$Probe -is [System.IO.DirectoryInfo]} {$Retv = [UInt32] 1; break}
+		{$Probe -is [System.IO.FileInfo]}      {$Retv = [UInt32] 1; break}
+		{$Probe -eq $null}                     {$Retv = [Uint32] 0}
 	}
 	return $Retv
 }
@@ -183,6 +183,7 @@ if (Test-Path -LiteralPath $PathParam -PathType Container) {
 	$Items04b = Get-ChildItem -Path "tw-*.tmp" -Force
 	$CountPost04a, $CountPost04b = (Count-Items $Items04a), (Count-Items $Items04b)
 	$Result04 = ($CountInit04a + $CountInit04b) - ($CountPost04a + $CountPost04b)
+	Set-Location
 	Pop-Location -StackName 'Stack04'
 }
 else {
@@ -203,5 +204,5 @@ Remove-Variable -Name "Result*", "Items*", "CountInit*", "CountPost*"
 Remove-Variable -Name 'ErrActPrefSaved', 'ConfrmPrefSaved', 'StatusVal', 'StatusMsg', 'TotalRmvd', 'PathParam', 'PrimColor', 'ScndColor'
 
 $StatusMsg = "[MNTNC] : Simple Cleaning Script $($PSStyle.Italic)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
-Write-Host -Object $StatusMsg -ForegroundColor $PrimColor
+Write-Host -Object $StatusMsg -ForegroundColor 'White'
 # --------------------------------------------------------------- End Main --------------------------------------------------------------- #
