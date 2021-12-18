@@ -1,7 +1,7 @@
 param
 (
-	[String] $Command,
-	[Switch] $Help
+	[string] $Command,
+	[switch] $Help
 )
 
 enum RunModeType {Norun; Infos; Start}
