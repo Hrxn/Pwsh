@@ -1,26 +1,28 @@
-param(
-	[String] $Path,
-	[Switch] $Recurse
+param
+(
+	[string] $Path,
+	[switch] $Recurse
 )
 
 if ([String]::IsNullOrEmpty($Path)) {
 	Write-Host "[fs.filetypepresence] Usage: fs.filetypepresence.ps1 [-Path] <PATH> [-Recurse]"
-	exit 1
+	exit 0
 }
 
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
-	Write-Host "[fs.filetypepresence] The given path parameter [$Path] does not exist or is not a valid path"
-	exit 2
+	Write-Host "[fs.filetypepresence] The given path parameter '$Path' does not exist or is not a valid path"
+	exit 1
 }
 
 $Path = Resolve-Path -LiteralPath $Path
 if ($Recurse) {
 	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
-} else {
+} 
+else {
 	$Full = Get-ChildItem -LiteralPath $Path -Force -File
 }
-$Size = $Full.Count
-$Exts = [System.Collections.Generic.List[String]]::new()
+$Size = ($Full | Measure-Object).Count
+$Exts = [Collections.Generic.List[String]]::new()
 
 foreach ($Item in $Full) {
 	if (-not ($Exts.Contains($Item.Extension))) {
