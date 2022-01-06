@@ -1,27 +1,31 @@
-param(
-	[String] $Path,
-	[Switch] $Recurse,
-	[Switch] $PassObject
+param
+(
+	[string] $Path,
+	[switch] $Recurse,
+	[switch] $PassObject
 )
 
 if ([String]::IsNullOrEmpty($Path)) {
 	Write-Host "[fs.filetypecounter] Usage: fs.filetypecounter.ps1 [-Path] <PATH> [-Recurse] [-PassObject]"
-	exit 1
+	exit 0
 }
 
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 	Write-Host "[fs.filetypecounter] The given path parameter [$Path] does not exist or is not a valid path"
-	exit 2
+	exit 1
 }
 
 $Path = Resolve-Path -LiteralPath $Path
 if ($Recurse) {
 	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
-} else {
+} 
+else {
 	$Full = Get-ChildItem -LiteralPath $Path -Force -File
 }
-$Size = $Full.Count
-$Exts = [System.Collections.Generic.List[String]]::new()
+$Size = ($Full | Measure-Object).Count
+
+$Exts = [Collections.Generic.List[String]]::new()
+$Outp = [Collections.Generic.List[psobject]]::new()
 
 foreach ($Item in $Full) {
 	if (-not ($Exts.Contains($Item.Extension))) {
@@ -29,14 +33,12 @@ foreach ($Item in $Full) {
 	}
 }
 
-$Outp = [System.Collections.Generic.List[PSObject]]::new()
-
 foreach ($Item in $Exts) {
-	$Outp.Add([PSCustomObject]@{Extension = $Item; Count = 0})
+	$Outp.Add([psobject]@{Extension = $Item; Count = 0})
 }
 
 if ($Exts.Contains([String]::Empty)) {
-	$Outp[$Exts.IndexOf([String]::Empty)].Extension = '---'
+	$Outp[$Exts.IndexOf([String]::Empty)].Extension = '(No Extension)'
 }
 
 for ($i = 0; $i -lt $Size; $i++) {
@@ -48,17 +50,18 @@ for ($i = 0; $i -lt $Size; $i++) {
 
 if ($PassObject) {
 	return $Outp
-} else {
+}
+else {
 	Write-Host "+--------------------------------+--------------------------------+"
 	Write-Host "|      Filetype (Extension)      |             Amount             |"
 	Write-Host "+--------------------------------+--------------------------------+"
-	$tstr = [String]::Concat("|", "Total Files: $Size".PadLeft(25), "|".PadLeft(8))
 	foreach ($Entry in $Outp) {
 		$lstr = [String]::Concat("|", $Entry.Extension.PadLeft(18), "|".PadLeft(15))
 		$rstr = [String]::Concat(([String]$Entry.Count).PadLeft(18), "|".PadLeft(15))
 		$ostr = [String]::Concat($lstr, $rstr)
 		Write-Host $ostr
 	}
+	$tstr = [String]::Concat("|", "Total Files: $Size".PadLeft(25), "|".PadLeft(8))
 	Write-Host "+--------------------------------+--------------------------------+"
 	Write-Host $tstr
 	Write-Host "+--------------------------------+"
