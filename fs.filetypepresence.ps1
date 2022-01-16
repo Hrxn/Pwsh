@@ -14,7 +14,7 @@ if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 	exit 1
 }
 
-$Path = Resolve-Path -LiteralPath $Path
+$Path = Convert-Path -LiteralPath $Path
 if ($Recurse) {
 	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
 } 
