@@ -1,8 +1,7 @@
 param
 (
 	[string] $Path,
-	[switch] $Recurse,
-	[switch] $PassObject
+	[switch] $Recurse, [switch] $PassObject
 )
 
 if ([String]::IsNullOrEmpty($Path)) {
@@ -15,7 +14,7 @@ if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 	exit 1
 }
 
-$Path = Resolve-Path -LiteralPath $Path
+$Path = Convert-Path -LiteralPath $Path
 if ($Recurse) {
 	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
 } 
@@ -34,7 +33,7 @@ foreach ($Item in $Full) {
 }
 
 foreach ($Item in $Exts) {
-	$Outp.Add([psobject]@{Extension = $Item; Count = 0})
+	$Outp.Add([psobject]@{Extension = $Item; Count = [UInt] 0})
 }
 
 if ($Exts.Contains([String]::Empty)) {
