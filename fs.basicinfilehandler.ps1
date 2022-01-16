@@ -1,27 +1,27 @@
-if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
+if (($null -eq $args[0]) -or ($null -eq $args[1])) {
 	Write-Host "[fs.infilehandler] Usage: fs.infilehandler.ps1 <INPUT-FILE> <PROCESSING-SCRIPT>"
-	exit 1
+	exit 0
 }
 
 if (-not (Test-Path -LiteralPath $args[0] -PathType Leaf)) {
 	Write-Host "[fs.infilehandler] Given <INPUT-FILE> parameter could not be found as a file"
-	exit 2
+	exit 1
 }
 
 if (-not ((Get-Content $args[0]).Count -gt 0)) {
 	Write-Host "[fs.infilehandler] Given <INPUT-FILE> has been found but seems to be empty"
-	exit 3
+	exit 2
 }
 
 if (-not (Get-Command $args[1])) {
 	Write-Host "[fs.infilehandler] Given <PROCESSING-SCRIPT> command does not exist"
-	exit 4
+	exit 3
 }
 
-$File = (Get-Item $args[0]).FullName
-$Size = (Get-Content $args[0]).Count
+$Size = (Get-Content $args[0] | Measure-Object -Line).Lines
 $Proc = (Get-Command $args[1]).Source
-$Cntr = 0
+$File = (Get-Item $args[0]).FullName
+$Cntr = [UInt] 0
 
 foreach ($Read in [System.IO.File]::ReadLines($File)) {
 	$Cntr += 1
