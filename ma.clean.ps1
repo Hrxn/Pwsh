@@ -170,11 +170,11 @@ $ErrorActionPreference, $ConfirmPreference = 'Stop', 'None'
 Save-PSDriveState
 
 # ------------------------------------------------------ Tasks: 01 / 04 ------------------------------------------------------ #
-Write-Host -Object "[01/04] : Cleaning System Temp directory in %WinDir%" -ForegroundColor $ScndColor
+Write-Host -Object "[01/04] : Cleaning system temp directory in %WinDir%" -ForegroundColor $ScndColor
 $Result01 = Clean-Environ -Envpth $Env:windir
 
 # ------------------------------------------------------ Tasks: 02 / 04 ------------------------------------------------------ #
-Write-Host -Object "[02/04] : Cleaning User's Temp directory in %LocalAppData%" -ForegroundColor $ScndColor
+Write-Host -Object "[02/04] : Cleaning user's temp directory in %LocalAppData%" -ForegroundColor $ScndColor
 $Result02 = Clean-Environ -Envpth $Env:LocalAppData
 
 # ------------------------------------------------------ Tasks: 03 / 04 ------------------------------------------------------ #
