@@ -11,7 +11,7 @@ function Print-Unava {
 }
 
 function Print-Nopth {
-	$InfMsg = "   !    : Environment variable is present, but it's not a valid Path?!"
+	$InfMsg = "   !    : Environment variable is present, but it's not a valid path?!"
 	Write-Host -Object $InfMsg -ForegroundColor 'DarkRed'
 }
 
@@ -21,7 +21,7 @@ function Print-Noenv {
 }
 
 function Print-Notmp {
-	$InfMsg = "   !    : Environment variable points to a correct Path, but the '\Temp' subdirectory does not exist!"
+	$InfMsg = "   !    : Environment variable points to a correct path, but the '\Temp' subdirectory does not exist!"
 	Write-Host -Object $InfMsg -ForegroundColor 'DarkYellow'
 }
 
