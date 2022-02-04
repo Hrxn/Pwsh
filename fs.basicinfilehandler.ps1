@@ -21,7 +21,7 @@ if (-not (Get-Command $args[1])) {
 $Size = (Get-Content $args[0] | Measure-Object -Line).Lines
 $Proc = (Get-Command $args[1]).Source
 $File = (Get-Item $args[0]).FullName
-$Cntr = [UInt] 0
+$Cntr = [UInt64] 0
 
 foreach ($Read in [System.IO.File]::ReadLines($File)) {
 	$Cntr += 1
