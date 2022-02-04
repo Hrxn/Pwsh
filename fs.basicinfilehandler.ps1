@@ -1,20 +1,20 @@
 if (($null -eq $args[0]) -or ($null -eq $args[1])) {
-	Write-Host "[fs.infilehandler] Usage: fs.infilehandler.ps1 <INPUT-FILE> <PROCESSING-SCRIPT>"
+	Write-Host "[fs.basicinfilehandler] Usage: fs.infilehandler.ps1 <INPUT-FILE> <PROCESSING-SCRIPT>"
 	exit 0
 }
 
 if (-not (Test-Path -LiteralPath $args[0] -PathType Leaf)) {
-	Write-Host "[fs.infilehandler] Given <INPUT-FILE> parameter could not be found as a file"
+	Write-Host "[fs.basicinfilehandler] Given <INPUT-FILE> parameter could not be found as a file"
 	exit 1
 }
 
 if (-not ((Get-Content $args[0]).Count -gt 0)) {
-	Write-Host "[fs.infilehandler] Given <INPUT-FILE> has been found but seems to be empty"
+	Write-Host "[fs.basicinfilehandler] Given <INPUT-FILE> has been found but seems to be empty"
 	exit 2
 }
 
 if (-not (Get-Command $args[1])) {
-	Write-Host "[fs.infilehandler] Given <PROCESSING-SCRIPT> command does not exist"
+	Write-Host "[fs.basicinfilehandler] Given <PROCESSING-SCRIPT> command does not exist"
 	exit 3
 }
 
