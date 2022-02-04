@@ -33,7 +33,7 @@ foreach ($Item in $Full) {
 }
 
 foreach ($Item in $Exts) {
-	$Outp.Add([psobject]@{Extension = $Item; Count = [UInt] 0})
+	$Outp.Add([psobject]@{Extension = $Item; Count = [UInt64] 0})
 }
 
 if ($Exts.Contains([String]::Empty)) {
@@ -65,3 +65,4 @@ else {
 	Write-Host $tstr
 	Write-Host "+--------------------------------+"
 }
+
