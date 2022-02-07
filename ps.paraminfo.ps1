@@ -123,7 +123,7 @@ process {
 					else {
 						$PositionValue = 'None (Named Parameter)'
 					}
-					$Outp = [PSObject]@{
+					$Outp = [pscustomobject]@{
 									Name                            = $Name
 									Type                            = $Type
 									Aliases                         = $Aliases
