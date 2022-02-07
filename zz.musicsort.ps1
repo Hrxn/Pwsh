@@ -637,7 +637,7 @@ switch -exact ($RunMode) {
 # --------------------------------------------------------------- End Main --------------------------------------------------------------- #
 
 if ($RunMode -eq 'start') {
-	$FinishMsg = "    [zz.musicsort] : Music Directory Sort-a-bot is $($PSStyle.Italic)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
+	$FinishMsg = "    [zz.musicsort] : Music Directory Sort-a-bot is $($PSStyle.Underline)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
 	Write-Host -Object $FinishMsg -ForegroundColor 'White'
 }
 
