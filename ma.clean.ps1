@@ -221,7 +221,7 @@ Remove-Variable -Name "Result*", "Items*", "CountInit*", "CountPost*"
 Remove-Variable -Name 'ErrActPrefSaved', 'ConfrmPrefSaved', 'StatusVal', 'StatusMsg', 'TotalRmvd', 'PathParam', 'PrimColor', 'ScndColor'
 Restore-PSDriveState
 
-$StatusMsg = "[MNTNC] : Simple Cleaning Script $($PSStyle.Italic)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
+$StatusMsg = "[MNTNC] : Simple Cleaning Script $($PSStyle.Underline)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
 Write-Host -Object $StatusMsg -ForegroundColor 'White'
 
 # --------------------------------------------------------------- End Main --------------------------------------------------------------- #
