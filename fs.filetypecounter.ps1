@@ -24,7 +24,7 @@ else {
 $Size = ($Full | Measure-Object).Count
 
 $Exts = [Collections.Generic.List[String]]::new()
-$Outp = [Collections.Generic.List[psobject]]::new()
+$Outp = [Collections.Generic.List[PSObject]]::new()
 
 foreach ($Item in $Full) {
 	if (-not ($Exts.Contains($Item.Extension))) {
@@ -33,7 +33,7 @@ foreach ($Item in $Full) {
 }
 
 foreach ($Item in $Exts) {
-	$Outp.Add([psobject]@{Extension = $Item; Count = [UInt64] 0})
+	$Outp.Add([PSObject]@{Extension = $Item; Count = [UInt64] 0})
 }
 
 if ($Exts.Contains([String]::Empty)) {
