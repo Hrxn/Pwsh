@@ -16,10 +16,10 @@ if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 
 $Path = Convert-Path -LiteralPath $Path
 if ($Recurse) {
-	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
+	$Full = Get-ChildItem -Path $Path -Recurse -Force -File
 } 
 else {
-	$Full = Get-ChildItem -LiteralPath $Path -Force -File
+	$Full = Get-ChildItem -Path $Path -Force -File
 }
 $Size = ($Full | Measure-Object).Count
 $Exts = [Collections.Generic.List[String]]::new()
