@@ -41,8 +41,8 @@ param (
 				HelpMessage = 'Enter the name of a cmdlet'
 	)]
 	[ValidateNotNullorEmpty()]
-	[String] $Command,
-
+	[String] $Command
+,
 	[Parameter(
 				Position = 1,
 				HelpMessage = 'Enter the name of a parameter'
