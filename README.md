@@ -13,11 +13,11 @@ Almost all of these are based on old Windows CMD scripts, sometimes also simply 
 
 Rewriting my stuff in PowerShell seemed like a sane choice in order to make this all portable and ensure it's future proof, at least somewhat.
 
-I strive to be somewhat consistent here in script design and language utilization (type accelerator capitalization, hello?!), but that is not an absolute priority.
-All of these scripts are designed to be self-contained, i.e. they do not depend on each other, or on other PowerShell Modules, or Components. etc.
+I strive to be somewhat consistent here in script design and language utilization (type accelerator capitalization - hello?!), but that is not an absolute priority.
+All of these scripts are designed to be self-contained, i.e. they do not depend on each other, or on other PowerShell Modules, or Components etc.  
 The one glaring exception is obviously scripts that are made to run other applications, like FFmpeg for example.
 But I've started to add dependency checks in such cases. God knows who might need them..   
-Please note that I'm targeting only fairly recent versions of PowerShell now. In other words, PowerShell Core only, or better. Version 7.2 is considered LTS, so that will be used as a reference.
+Please note that I'm targeting only fairly recent versions of PowerShell now. In other words, PowerShell Core only, or better. Version 7.2 is considered LTS, so that will be used as reference in the future.
 
 #### Goals:
 - Make terminal life easier and more joyful.
