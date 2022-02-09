@@ -22,7 +22,7 @@ Please note that I'm targeting only fairly recent versions of PowerShell now. In
 #### Goals:
 - Make terminal life easier and more joyful.
 - Cross-platform usage.  
-  To the extent that it is even possible at all. Some limitations still apply, obviously.  
+  To the extent that it's even possible at all. Some limitations still apply, obviously.  
   All platforms that are not Windows should be considered untested so far.
 - Scratching my own itch.  
   The reason this came into existence.
