@@ -75,7 +75,7 @@ process {
 			$DrvPrp_DriveName      = $Entry.Name
 			$DrvPrp_RootDirectory  = $Entry.RootDirectory
 			$DrvPrp_TotalFreeSpace = $Entry.TotalFreeSpace
-			$DrvPrp_Totalsize      = $Entry.TotalSize
+			$DrvPrp_TotalSize      = $Entry.TotalSize
 			$DrvPrp_VolumeLabel    = $Entry.VolumeLabel
 		}
 		catch [System.UnauthorizedAccessException] {
@@ -102,7 +102,7 @@ process {
 					'DriveVolumeLabel' = $DrvPrp_VolumeLabel
 					'DriveIsReady'     = $DrvPrp_DriveReady
 					'RootDirectory'    = $DrvPrp_RootDirectory
-					'TotalSize'        = $DrvPrp_Totalsize
+					'TotalSize'        = $DrvPrp_TotalSize
 					'TotalFreeSpace'   = $DrvPrp_TotalFreeSpace
 				}
 			}
@@ -115,7 +115,7 @@ process {
 					'DriveType'        = $DrvPrp_DriveType
 					'RootDirectory'    = $DrvPrp_RootDirectory
 					'DriveIsReady'     = $DrvPrp_DriveReady
-					'TotalSize'        = $DrvPrp_Totalsize
+					'TotalSize'        = $DrvPrp_TotalSize
 					'TotalFreeSpace'   = $DrvPrp_TotalFreeSpace
 					'AvailFreeSpace'   = $DrvPrp_AvailFreeSpace
 				}
@@ -129,11 +129,11 @@ process {
 					'DriveType'          = $DrvPrp_DriveType
 					'RootDirectory'      = $DrvPrp_RootDirectory
 					'DriveIsReady'       = $DrvPrp_DriveReady
-					'TotalSizeInMB'      = ($DrvPrp_Totalsize / 1MB)
+					'TotalSizeInMB'      = ($DrvPrp_TotalSize / 1MB)
 					'TotalFreeSpaceInMB' = ($DrvPrp_TotalFreeSpace / 1MB)
 					'AvailFreeSpaceInMB' = ($DrvPrp_AvailFreeSpace / 1MB)
-					'TotalUsedSpaceInMB' = (($DrvPrp_Totalsize - $DrvPrp_TotalFreeSpace) / 1MB)
-					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_Totalsize - $DrvPrp_TotalFreeSpace) / $DrvPrp_Totalsize) * 100), 2)
+					'TotalUsedSpaceInMB' = (($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / 1MB)
+					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
 				}
 			}
 			elseif ($Infolevel -eq 3) {
@@ -145,11 +145,11 @@ process {
 					'DriveType'          = $DrvPrp_DriveType
 					'RootDirectory'      = $DrvPrp_RootDirectory
 					'DriveIsReady'       = $DrvPrp_DriveReady
-					'TotalSizeInGB'      = ($DrvPrp_Totalsize / 1GB)
+					'TotalSizeInGB'      = ($DrvPrp_TotalSize / 1GB)
 					'TotalFreeSpaceInGB' = ($DrvPrp_TotalFreeSpace / 1GB)
 					'AvailFreeSpaceInGB' = ($DrvPrp_AvailFreeSpace / 1GB)
-					'TotalUsedSpaceInGB' = (($DrvPrp_Totalsize - $DrvPrp_TotalFreeSpace) / 1GB)
-					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_Totalsize - $DrvPrp_TotalFreeSpace) / $DrvPrp_Totalsize) * 100), 2)
+					'TotalUsedSpaceInGB' = (($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / 1GB)
+					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
 				}
 			}
 		}
