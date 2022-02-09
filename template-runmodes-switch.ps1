@@ -31,7 +31,7 @@ switch ($RunMode) {
 	([RunModeType]::Start) {Write-Host '   !    Start params found, start the execution of the actual script!' -ForegroundColor 'Green'; continue}
 }
 
-# Example 3 with switch statement using explicte string types
+# Example 3 with switch statement using explicit verbatim strings
 
 switch ($RunMode) {
 	'Norun' {Write-Host "   -    Incorrect parameter usage! | Display Info and Usage Message | $($PSStyle.Foreground.BrightCyan)command -> $command $($PSStyle.Reset)| $($PSStyle.Foreground.BrightCyan)args -> $args $($PSStyle.Reset)" -ForegroundColor 'White'; continue}
