@@ -26,7 +26,7 @@ New-Variable -Name 'FileExtsAudi' -Option Constant -Value @(
 New-Variable -Name 'FileExtsImgs' -Option Constant -Value @(
 	'.jpg', '.jpeg', '.png', '.webp', '.jpe', '.jxl', '.tiff', '.tif', '.jif', '.jfif', '.avif', '.heif', '.heic', '.jxr', '.jfi', '.j2k',
 	'.jp2', '.hdp', '.gif', '.wdp', '.hdr', '.exr', '.ppm', '.pbm', '.bpg', '.svg', '.tga', '.bmp', '.jpf', '.jpm', '.jpg2', '.jpx',
-	'.j2c', '.jpc', '.apng', '.mng', '.wp2', '.heifs', '.heics', '.avci', '.avcs', '.avifs'
+	'.j2c', '.jpc', '.apng', '.mng', '.wp2', '.heifs', '.heics', '.avci', '.avcs', '.avifs', '.pnm'
 )
 
 New-Variable -Name 'FileExtsMeta' -Option Constant -Value @(
