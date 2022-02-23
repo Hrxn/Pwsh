@@ -51,18 +51,18 @@ if ($PassObject) {
 	return $Outp
 }
 else {
-	Write-Host "+--------------------------------+--------------------------------+"
-	Write-Host "|      Filetype (Extension)      |             Amount             |"
-	Write-Host "+--------------------------------+--------------------------------+"
+	Write-Host '┌────────────────────────────────┬─────────────────────────────────┐'
+	Write-Host '│      Filetpye (Extension)      │             Amount              │'
+	Write-Host '├────────────────────────────────┼─────────────────────────────────┤'
 	foreach ($Entry in $Outp) {
-		$lstr = [String]::Concat("|", $Entry.Extension.PadLeft(18), "|".PadLeft(15))
-		$rstr = [String]::Concat(([String]$Entry.Count).PadLeft(18), "|".PadLeft(15))
+		$lstr = [String]::Concat('│', $Entry.Extension.PadLeft(18), '│'.PadLeft(16))
+		$rstr = [String]::Concat(([String]$Entry.Count).PadLeft(18), '│'.PadLeft(16))
 		$ostr = [String]::Concat($lstr, $rstr)
 		Write-Host $ostr
 	}
-	$tstr = [String]::Concat("|", "Total Files: $Size".PadLeft(25), "|".PadLeft(8))
-	Write-Host "+--------------------------------+--------------------------------+"
+	$tstr = [String]::Concat('│', "Total Files: $Size".PadLeft(25), '│'.PadLeft(9))
+	Write-Host '├────────────────────────────────┼─────────────────────────────────┘'
 	Write-Host $tstr
-	Write-Host "+--------------------------------+"
+	Write-Host '└────────────────────────────────┘'
 }
 
