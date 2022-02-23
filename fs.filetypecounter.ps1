@@ -55,7 +55,7 @@ else {
 	Write-Host '│      Filetpye (Extension)      │             Amount              │'
 	Write-Host '├────────────────────────────────┼─────────────────────────────────┤'
 	foreach ($Entry in $Outp) {
-		$lstr = [String]::Concat('│', $Entry.Extension.PadLeft(18), '│'.PadLeft(16))
+		$lstr = [String]::Concat('│', $Entry.Extension.PadLeft(18), '│'.PadLeft(15))
 		$rstr = [String]::Concat(([String]$Entry.Count).PadLeft(18), '│'.PadLeft(16))
 		$ostr = [String]::Concat($lstr, $rstr)
 		Write-Host $ostr
