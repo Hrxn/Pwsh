@@ -10,7 +10,7 @@ Includes fundamental properties like drive type, drive format type, and capacity
 Name of a specific drive that the output will be limited to.
 
 .PARAMETER Infolevel
-Set information variant level for the output. Supported values: 0 - 3
+Set information variant level for the output. Supported values: 0-5
 
 .EXAMPLE
 fs.drives
@@ -41,7 +41,7 @@ param (
 	[String] $Drive
 ,
 	[Parameter(Position = 1)]
-	[ValidateRange(0, 3)]
+	[ValidateRange(0, 5)]
 	[Byte] $Infolevel = 0
 )
 
@@ -60,6 +60,17 @@ begin {
 	}
 	else {
 		$Drives = [System.IO.DriveInfo]::GetDrives()
+	}
+
+	function Format-DynamicSizeStr {
+		param([UInt64]$bytes)
+		if     ($bytes -gt 1pb) {[String]::Format('{0:N2} PiB', $bytes/1pb)}
+		elseif ($bytes -gt 1tb) {[String]::Format('{0:N2} TiB', $bytes/1tb)}
+		elseif ($bytes -gt 1gb) {[String]::Format('{0:N2} GiB', $bytes/1gb)}
+		elseif ($bytes -gt 1mb) {[String]::Format('{0:N2} MiB', $bytes/1mb)}
+		elseif ($bytes -gt 1kb) {[String]::Format('{0:N2} KiB', $bytes/1kb)}
+		elseif ($bytes -gt 1)   {[String]::Format('{0:N0} Bytes', $bytes)}
+		else                    {'Empty'}
 	}
 
 }
@@ -96,17 +107,31 @@ process {
 		if ($DrvPrp_DriveReady) {
 			if ($Infolevel -eq 0) {
 				$DriveInfoMap = [pscustomobject]@{
-					'DriveName'        = $DrvPrp_DriveName
-					'DriveType'        = $DrvPrp_DriveType
-					'DriveFormat'      = $DrvPrp_DriveFormat
-					'DriveVolumeLabel' = $DrvPrp_VolumeLabel
-					'DriveIsReady'     = $DrvPrp_DriveReady
-					'RootDirectory'    = $DrvPrp_RootDirectory
-					'TotalSize'        = $DrvPrp_TotalSize
-					'TotalFreeSpace'   = $DrvPrp_TotalFreeSpace
+					'DriveVolumeLabel'  = $DrvPrp_VolumeLabel
+					'DriveType'         = $DrvPrp_DriveType
+					'DriveFormat'       = $DrvPrp_DriveFormat
+					'RootDirectory'     = $DrvPrp_RootDirectory
+					'DriveName'         = $DrvPrp_DriveName.Substring(0, 2)
+					'DriveIdentifier'   = $DrvPrp_DriveName.Substring(0, 1)
+					'TotalSizeStr'      = (Format-DynamicSizeStr $DrvPrp_TotalSize)
+					'TotalFreeSpaceStr' = (Format-DynamicSizeStr $DrvPrp_TotalFreeSpace)
+					'AvailFreeSpaceStr' = (Format-DynamicSizeStr $DrvPrp_AvailFreeSpace)
+					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
 				}
 			}
 			elseif ($Infolevel -eq 1) {
+				$DriveInfoMap = [pscustomobject]@{
+					'DriveVolumeLabel'  = $DrvPrp_VolumeLabel
+					'DriveType'         = $DrvPrp_DriveType
+					'DriveFormat'       = $DrvPrp_DriveFormat
+					'RootDirectory'     = $DrvPrp_RootDirectory
+					'DriveName'         = $DrvPrp_DriveName.Substring(0, 2)
+					'TotalSizeStr'      = (Format-DynamicSizeStr $DrvPrp_TotalSize)
+					'TotalFreeSpaceStr' = (Format-DynamicSizeStr $DrvPrp_TotalFreeSpace)
+					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
+				}
+			}
+			elseif ($Infolevel -eq 2) {
 				$DriveInfoMap = [pscustomobject]@{
 					'DriveVolumeLabel' = $DrvPrp_VolumeLabel
 					'DriveIdentifier'  = $DrvPrp_DriveName.Substring(0, 1)
@@ -120,22 +145,6 @@ process {
 					'AvailFreeSpace'   = $DrvPrp_AvailFreeSpace
 				}
 			}
-			elseif ($Infolevel -eq 2) {
-				$DriveInfoMap = [pscustomobject]@{
-					'DriveVolumeLabel'   = $DrvPrp_VolumeLabel
-					'DriveIdentifier'    = $DrvPrp_DriveName.Substring(0, 1)
-					'DriveFormat'        = $DrvPrp_DriveFormat
-					'DriveName'          = $DrvPrp_DriveName.Substring(0, 2)
-					'DriveType'          = $DrvPrp_DriveType
-					'RootDirectory'      = $DrvPrp_RootDirectory
-					'DriveIsReady'       = $DrvPrp_DriveReady
-					'TotalSizeInMB'      = ($DrvPrp_TotalSize / 1MB)
-					'TotalFreeSpaceInMB' = ($DrvPrp_TotalFreeSpace / 1MB)
-					'AvailFreeSpaceInMB' = ($DrvPrp_AvailFreeSpace / 1MB)
-					'TotalUsedSpaceInMB' = (($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / 1MB)
-					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
-				}
-			}
 			elseif ($Infolevel -eq 3) {
 				$DriveInfoMap = [pscustomobject]@{
 					'DriveVolumeLabel'   = $DrvPrp_VolumeLabel
@@ -145,11 +154,39 @@ process {
 					'DriveType'          = $DrvPrp_DriveType
 					'RootDirectory'      = $DrvPrp_RootDirectory
 					'DriveIsReady'       = $DrvPrp_DriveReady
-					'TotalSizeInGB'      = ($DrvPrp_TotalSize / 1GB)
-					'TotalFreeSpaceInGB' = ($DrvPrp_TotalFreeSpace / 1GB)
-					'AvailFreeSpaceInGB' = ($DrvPrp_AvailFreeSpace / 1GB)
-					'TotalUsedSpaceInGB' = (($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / 1GB)
+					'TotalSizeInMB'      = ($DrvPrp_TotalSize / 1mb)
+					'TotalFreeSpaceInMB' = ($DrvPrp_TotalFreeSpace / 1mb)
+					'AvailFreeSpaceInMB' = ($DrvPrp_AvailFreeSpace / 1mb)
+					'TotalUsedSpaceInMB' = (($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / 1mb)
 					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
+				}
+			}
+			elseif ($Infolevel -eq 4) {
+				$DriveInfoMap = [pscustomobject]@{
+					'DriveVolumeLabel'   = $DrvPrp_VolumeLabel
+					'DriveIdentifier'    = $DrvPrp_DriveName.Substring(0, 1)
+					'DriveFormat'        = $DrvPrp_DriveFormat
+					'DriveName'          = $DrvPrp_DriveName.Substring(0, 2)
+					'DriveType'          = $DrvPrp_DriveType
+					'RootDirectory'      = $DrvPrp_RootDirectory
+					'DriveIsReady'       = $DrvPrp_DriveReady
+					'TotalSizeInGB'      = ($DrvPrp_TotalSize / 1gb)
+					'TotalFreeSpaceInGB' = ($DrvPrp_TotalFreeSpace / 1gb)
+					'AvailFreeSpaceInGB' = ($DrvPrp_AvailFreeSpace / 1gb)
+					'TotalUsedSpaceInGB' = (($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / 1gb)
+					'TotalUsedPercent'   = [Math]::Round(((($DrvPrp_TotalSize - $DrvPrp_TotalFreeSpace) / $DrvPrp_TotalSize) * 100), 2)
+				}
+			}
+			elseif ($Infolevel -eq 5) {
+				$DriveInfoMap = [pscustomobject]@{
+					'DriveName'        = $DrvPrp_DriveName
+					'DriveType'        = $DrvPrp_DriveType
+					'DriveFormat'      = $DrvPrp_DriveFormat
+					'DriveVolumeLabel' = $DrvPrp_VolumeLabel
+					'DriveIsReady'     = $DrvPrp_DriveReady
+					'RootDirectory'    = $DrvPrp_RootDirectory
+					'TotalSize'        = $DrvPrp_TotalSize
+					'TotalFreeSpace'   = $DrvPrp_TotalFreeSpace
 				}
 			}
 		}
