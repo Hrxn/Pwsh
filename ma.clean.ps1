@@ -10,6 +10,11 @@ function Print-Unava {
 	Write-Host -Object $InfMsg -ForegroundColor 'DarkRed'
 }
 
+function Print-Racec {
+	$InfMsg = "   !    : Miscounted items in '$(Get-Location)', usually caused by writes to the directory currently handled by the script."
+	Write-Host -Object $InfMsg -ForegroundColor 'DarkRed'
+}
+
 function Print-Nopth {
 	$InfMsg = "   !    : Environment variable is present, but it's not a valid path?!"
 	Write-Host -Object $InfMsg -ForegroundColor 'DarkRed'
@@ -66,14 +71,20 @@ function Total-Print {
 		$OutClr = ($Output -gt 0) ? [ConsoleColor]::Cyan : [ConsoleColor]::DarkGray
 		$Prefix = '   =    : '
 	}
-	if ($StatusVal -eq 1) {
+	if ($StatusVal -gt 0) {
 		switch ($Output) {
 			{$Output -gt 1} {$OutMsg = "$Output items have been removed so far!"; break}
 			{$Output -eq 1} {$OutMsg = "$Output item has been removed so far!"; break}
 			{$Output -eq 0} {$OutMsg = 'Nothing has been deleted!'}
 		}
-		$OutClr = [ConsoleColor]::DarkYellow
-		$Prefix, $OutMsg = '   !    : ', [String]::Concat($OutMsg, ' But there has been some issue in one of the locations!')
+		if ($StatusVal -eq 1) {
+			$OutClr = [ConsoleColor]::DarkYellow
+			$Prefix, $OutMsg = '   !    : ', [String]::Concat($OutMsg, ' But one of the locations could not be cleaned properly!')
+		}
+		if ($StatusVal -eq 2) {
+			$OutClr = [ConsoleColor]::DarkYellow
+			$Prefix, $OutMsg = '   !    : ', [String]::Concat($OutMsg, ' Miscount detected. Basically a race condition, re-run the script!')
+		}
 	}
 	$OutputStr = [String]::Concat($Prefix, $OutMsg)
 	Write-Host -Object $OutputStr -ForegroundCOlor $OutClr
@@ -109,14 +120,21 @@ function Analyze-Pth {
 function Nuke-Location {
 	$CountInit = Analyze-Pth (Get-Location)
 	try {
-		Remove-Item -Path "*" -Recurse -Force
+		Remove-Item -Path '*' -Recurse -Force
 	}
 	catch {
 		$script:StatusVal = 1
 		Print-Unava
 	}
 	$CountPost = Analyze-Pth (Get-Location)
-	$DoneCount = $CountInit - $CountPost
+	try {
+		$DoneCount = $CountInit - $CountPost
+	}
+	catch {
+		$script:StatusVal = 2
+		$DoneCount = 0
+		Print-Racec
+	}
 	Fancy-Print -Output $DoneCount
 	return $DoneCount
 }
