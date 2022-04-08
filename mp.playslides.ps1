@@ -68,7 +68,7 @@ if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 	exit 1
 }
 
-$Realpath = Convert-Path -Path $Path -ErrorAction 'Stop'
+$Realpath = Convert-Path -LiteralPath $Path -ErrorAction 'Stop'
 $Dirfiles = Get-ChildItem -Path $Realpath -File
 $Playlist = [Collections.Generic.List[String]]::new()
 $Execfile = (Get-Command -Name 'mpv').Path
