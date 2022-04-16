@@ -630,7 +630,7 @@ function Start-Run {
 
 if ($PWD.Provider.Name -cne 'FileSystem') {Show-Error 1}
 
-switch -exact ($RunMode) {
+switch ($RunMode) {
 	'norun' {Show-Info; break}
 	'infos' {Show-Help; break}
 	'start' {Start-Run; break}
