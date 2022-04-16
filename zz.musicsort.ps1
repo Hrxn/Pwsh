@@ -230,13 +230,13 @@ function Show-Error ([byte] $ErrCode) {
 }
 
 function Show-Info {
-	Write-Host -Object $Greeting -ForegroundColor 'DarkCyan'
-	Write-Host -Object $Usagemsg -ForegroundColor 'DarkCyan'
+	Write-Host -Object $Greeting -ForegroundColor DarkCyan
+	Write-Host -Object $Usagemsg -ForegroundColor DarkCyan
 }
 
 function Show-Help {
-	Write-Host -Object $Greeting -ForegroundColor 'DarkCyan'
-	Write-Host -Object $Info -ForegroundColor 'DarkGray'
+	Write-Host -Object $Greeting -ForegroundColor DarkCyan
+	Write-Host -Object $Info -ForegroundColor DarkGray
 }
 
 function Switch-SessionState {
@@ -615,15 +615,15 @@ function Check-Start ($BaseDir) {
 
 function Start-Run {
 	Switch-SessionState -Action 'Change'
-	Write-Host -Object $Greeting -ForegroundColor 'DarkCyan'
-	Write-Host -Object $Warn -ForegroundColor 'DarkGray'
+	Write-Host -Object $Greeting -ForegroundColor DarkCyan
+	Write-Host -Object $Warn -ForegroundColor DarkGray
 	$ConfirmVar = Read-Host -Prompt '    '
 	if ($ConfirmVar -eq 'confirm') {
 		Check-Start (Get-Location)
-		Write-Host -Object $Epilogue -ForegroundColor 'DarkCyan'
+		Write-Host -Object $Epilogue -ForegroundColor DarkCyan
 	}
 	else {
-		Write-Host -Object $Noopexit -ForegroundColor 'DarkCyan'
+		Write-Host -Object $Noopexit -ForegroundColor DarkCyan
 	}
 	Switch-SessionState -Action 'Restore'
 }
@@ -640,6 +640,6 @@ switch ($RunMode) {
 
 if ($RunMode -eq 'start') {
 	$FinishMsg = "    [zz.musicsort] : Music Directory Sort-a-bot is $($PSStyle.Underline)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
-	Write-Host -Object $FinishMsg -ForegroundColor 'White'
+	Write-Host -Object $FinishMsg -ForegroundColor White
 }
 
