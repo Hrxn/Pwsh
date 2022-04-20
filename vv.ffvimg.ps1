@@ -2,8 +2,7 @@ if ($args.Count -lt 2) {
 	Write-Host "[vv.ffvimg] Usage: vv.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]"
 } else {
 	$File = Get-Item $args[0]
-	$Name = $File.BaseName
-	$Dirn = "${Name}-Images"
+	$Dirn = "$($File.BaseName)-Images"
 	$tcst = $args[1]
 	if ($args.Count -eq 3) {
 		$tcen = $args[2]
