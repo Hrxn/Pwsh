@@ -14,31 +14,22 @@ if ($null -eq ([System.IO.Directory]::GetFiles('\\.\\pipe\\') | Where-Object {$_
 	exit 1
 }
 
-#### Processing of the Command Message
-# Remove all line breaks in the command message
+#### Process()
 $RelayMessage = $CommandMessage -replace "`n|`r"
-# According to https://github.com/mpv-player/mpv/blob/master/DOCS/man/ipc.rst, every message must be terminated with \n
 $RelayMessage = [String]::Concat($RelayMessage.Trim(), "`n")
-
-if ($RelayMessage.StartsWith('{')) {
-	$ExpectReply = $true
-} else {
-	$ExpectReply = $false
-}
+$ExpectReply = ($RelayMessage.StartsWith('{')) ? $true : $false
 
 #### Init()
-$PipeDirectiOpt   = [System.IO.Pipes.PipeDirection]::InOut
-$PipeOptionsOpt   = [System.IO.Pipes.PipeOptions]::Asynchronous
-$PipeImpersonlOpt = [System.Security.Principal.TokenImpersonationLevel]::Impersonation
-
-$PipeClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', $MpvPipeName, $PipeDirectiOpt, $PipeOptionsOpt, $PipeImpersonlOpt)
+$PipeDirectiOpt = [System.IO.Pipes.PipeDirection]::InOut
+$PipeOptionsOpt = [System.IO.Pipes.PipeOptions]::Asynchronous
+$PipeImpersnOpt = [System.Security.Principal.TokenImpersonationLevel]::Impersonation
+$PipeClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', $MpvPipeName, $PipeDirectiOpt, $PipeOptionsOpt, $PipeImpersnOpt)
 $PipeReader = [System.IO.StreamReader]::new($PipeClient)
 $PipeWriter = [System.IO.StreamWriter]::new($PipeClient)
 
 #### Main()
 try {
 	$PipeClient.Connect()
-
 	$PipeWriter.AutoFlush = $true
 
 	$PipeWriter.WriteLine($RelayMessage)
@@ -58,4 +49,3 @@ finally {
 	$PipeReader.Dispose()
 	$PipeClient.Dispose()
 }
-
