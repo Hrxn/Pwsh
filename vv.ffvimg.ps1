@@ -13,6 +13,6 @@ if ($args.Count -lt 2) {
 		Write-Host "[vv.ffvimg] Info: Deleting previously existing directory `"$Name`" ... "
 		Remove-Item -LiteralPath $Name -Recurse -Force
 	}
-	New-Item -Path '.' -Name $Name -ItemType 'Directory'
+	New-Item -Path '.' -Name "${Name}-Images" -ItemType 'Directory'
 	& ffmpeg -hide_banner -ss $tcst -t $tcen -i $File -c:v png ./$Name/%08d.png
 }
