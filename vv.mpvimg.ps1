@@ -10,7 +10,7 @@ if ($args.Count -lt 2) {
 		$tcen = $args[1] + 2
 	}
 	if (Test-Path -LiteralPath $Dirn -PathType Container) {
-		Write-Host "[vv.mpvimg] Info: Deleting previously existing directory ""$Dirn"" ... "
+		Write-Host "[vv.mpvimg] Info: Deleting previously existing directory ""$Dirn"" ..."
 		Remove-Item -LiteralPath $Dirn -Recurse -Force
 	}
 	New-Item -Path '.' -Name $Dirn -ItemType 'Directory'
