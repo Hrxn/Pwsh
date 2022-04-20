@@ -3,16 +3,17 @@ if ($args.Count -lt 2) {
 } else {
 	$File = Get-Item $args[0]
 	$Name = $File.BaseName
+	$Dirn = "${Name}-Images"
 	$tcst = $args[1]
 	if ($args.Count -eq 3) {
 		$tcen = $args[2]
 	} else {
 		$tcen = 2
 	}
-	if (Test-Path -LiteralPath $Name -PathType Container) {
-		Write-Host "[vv.ffvimg] Info: Deleting previously existing directory `"$Name`" ... "
-		Remove-Item -LiteralPath $Name -Recurse -Force
+	if (Test-Path -LiteralPath $Dirn -PathType Container) {
+		Write-Host "[vv.ffvimg] Info: Deleting previously existing directory ""$Dirn"" ..."
+		Remove-Item -LiteralPath $Dirn -Recurse -Force
 	}
-	New-Item -Path '.' -Name "${Name}-Images" -ItemType 'Directory'
-	& ffmpeg -hide_banner -ss $tcst -t $tcen -i $File -c:v png ./$Name/%08d.png
+	New-Item -Path '.' -Name $Dirn -ItemType 'Directory'
+	& ffmpeg -hide_banner -ss $tcst -t $tcen -i $File -c:v png ./$Dirn/%08d.png
 }
