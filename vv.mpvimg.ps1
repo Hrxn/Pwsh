@@ -13,7 +13,7 @@ if ($args.Count -lt 2) {
 		Write-Host "[vv.mpvimg] Info: Deleting previously existing directory `"$Name`" ... "
 		Remove-Item -LiteralPath $Name -Recurse -Force
 	}
-	New-Item -Path '.' -Name $Name -ItemType 'Directory'
+	New-Item -Path '.' -Name "${Name}-Images" -ItemType 'Directory'
 	$vo_image_opts = '--vo-image-format=png','--vo-image-png-compression=0','--vo-image-tag-colorspace=yes','--vo-image-high-bit-depth=yes'
 	& mpv --quiet --no-audio --fs --vo=image $vo_image_opts --vo-image-outdir=$Name --start=$tcst --end=$tcen $File
 }
