@@ -7,7 +7,7 @@ param (
 )
 
 $SavedConTitle = [Console]::Title
-[Console]::Title = "[mp.ipc] mpv IPC server instance (named pipe: '$IPCPipeName') is currently running..."
+[Console]::Title = "[mp.ipc] mpv IPC server instance (named pipe: $IPCPipeName) is currently running..."
 
 $FQPN = "\\.\pipe\$IPCPipeName"
 
@@ -23,5 +23,5 @@ else {
 	mpv --input-ipc-server=$FQPN --idle=yes --pause=yes
 }
 
-[Console]::WriteLine("[mp.ipc] mpv IPC server instance (named pipe: '$IPCPipeName') just quit...")
+[Console]::WriteLine("[mp.ipc] mpv IPC server instance (named pipe: $IPCPipeName) just quit...")
 [Console]::Title = $SavedConTitle
