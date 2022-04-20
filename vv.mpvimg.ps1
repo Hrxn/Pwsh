@@ -15,5 +15,5 @@ if ($args.Count -lt 2) {
 	}
 	New-Item -Path '.' -Name $Name -ItemType 'Directory'
 	$vo_image_opts = '--vo-image-format=png','--vo-image-png-compression=0','--vo-image-tag-colorspace=yes','--vo-image-high-bit-depth=yes'
-	& mpv --really-quiet --no-audio --fs --vo=image $vo_image_opts --vo-image-outdir=$Name --start=$tcst --end=$tcen $File
+	& mpv --quiet --no-audio --fs --vo=image $vo_image_opts --vo-image-outdir=$Name --start=$tcst --end=$tcen $File
 }
