@@ -1,10 +1,10 @@
-if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
+if ($args.Count -lt 2) {
 	Write-Host "[vv.ffvimg] Usage: vv.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]"
 } else {
 	$File = Get-Item $args[0]
 	$Name = $File.BaseName
 	$tcst = $args[1]
-	if ($args[2] -ne $null) {
+	if ($args.Count -eq 3) {
 		$tcen = $args[2]
 	} else {
 		$tcen = 2
@@ -14,5 +14,5 @@ if (($args[0] -eq $null) -or ($args[1] -eq $null)) {
 		Remove-Item -LiteralPath $Name -Recurse -Force
 	}
 	New-Item -Path '.' -Name $Name -ItemType 'Directory'
-	& ffmpeg -ss $tcst -t $tcen -i $File -c:v png ./$Name/%08d.png
+	& ffmpeg -hide_banner -ss $tcst -t $tcen -i $File -c:v png ./$Name/%08d.png
 }
