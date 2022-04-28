@@ -1,16 +1,17 @@
+[CmdletBinding(PositionalBinding = $false)]
 param
 (
-	[string] $Path,
-	[switch] $Recurse
+	[Parameter(Position = 0)][string] $Path = $PWD,
+	[Parameter()][switch] $Recurse
 )
 
-if ([String]::IsNullOrEmpty($Path)) {
+if (($Path -eq '--help' -or $Path -eq '?') -or [String]::IsNullOrEmpty($Path)) {
 	Write-Host "[fs.filetypepresence] Usage: fs.filetypepresence.ps1 [-Path] <PATH> [-Recurse]"
 	exit 0
 }
 
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
-	Write-Host "[fs.filetypepresence] The given path parameter '$Path' does not exist or is not a valid path"
+	Write-Host "[fs.filetypepresence] The given path parameter ""$Path"" does not exist or is not a valid path!" -ForegroundColor DarkRed
 	exit 1
 }
 
