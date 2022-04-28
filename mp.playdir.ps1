@@ -52,11 +52,11 @@ param (
 )
 
 if ($PWD.Provider.Name -cne 'FileSystem') {
-	Write-Host '[mp.playdir] : Error -> The current working directory is not a valid path in a filesystem!' -ForegroundColor 'Red'
+	Write-Host '[mp.playdir] : Error -> The current working directory is not a valid path in a filesystem!' -ForegroundColor Red
 	exit 255
 }
-if ($null -eq (Get-Command -Name 'mpv' -ErrorAction 'Ignore')) {
-	Write-Host '[mp.playdir] : Error -> Dependency Error: Missing dependency: mpv!' -ForegroundColor 'DarkRed'
+if ($null -eq (Get-Command -Name 'mpv' -ErrorAction Ignore)) {
+	Write-Host '[mp.playdir] : Error -> Dependency Error: Missing dependency: mpv' -ForegroundColor DarkRed
 	exit 254
 }
 if ($Path -eq '--help' -or $Path -eq '?') {
@@ -64,17 +64,17 @@ if ($Path -eq '--help' -or $Path -eq '?') {
 	exit 0
 }
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
-	Write-Host "[mp.playdir] The given path parameter '$Path' does not exist as a valid directory!"
+	Write-Host "[mp.playdir] The given path parameter ""$Path"" does not exist as a valid directory!"
 	exit 1
 }
 
-$Realpath = Convert-Path -LiteralPath $Path -ErrorAction 'Stop'
+$Realpath = Convert-Path -LiteralPath $Path -ErrorAction Stop
 $Dirfiles = Get-ChildItem -Path $Realpath -File
 $Playlist = [Collections.Generic.List[String]]::new()
 $Execfile = (Get-Command -Name 'mpv').Path
 
 if ($null -eq $Dirfiles) {
-	Write-Host "[mp.playdir] The specified directory '$Realpath' does not contain any files!"
+	Write-Host "[mp.playdir] The specified directory ""$Realpath"" does not contain any files!"
 	exit
 }
 
@@ -91,7 +91,7 @@ foreach ($File in $Dirfiles) {
 }
 
 if ($Playlist.Count -eq 0) {
-	Write-Host "[mp.playdir] The specified directory '$Realpath' does not contain any supported media files!"
+	Write-Host "[mp.playdir] The specified directory ""$Realpath"" does not contain any supported media files!"
 	exit
 }
 
