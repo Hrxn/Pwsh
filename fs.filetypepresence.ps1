@@ -33,6 +33,7 @@ foreach ($Item in $Full) {
 if ($Exts.Contains([String]::Empty)) {
 	$Exts[$Exts.IndexOf([String]::Empty)] = '(No Extension)'
 }
+
 [Console]::WriteLine('────────────────────────────────────────────────────────────────')
 [Console]::WriteLine('── The following File Types / File Extensions have been found ──')
 [Console]::WriteLine('────────────────────────────────────────────────────────────────')
