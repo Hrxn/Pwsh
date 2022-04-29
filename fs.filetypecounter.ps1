@@ -32,7 +32,6 @@ foreach ($Item in $Full) {
 		$Exts.Add($Item.Extension)
 	}
 }
-
 foreach ($Item in $Exts) {
 	$Outp.Add(@{Extension = $Item; Count = [UInt64] 0})
 }
