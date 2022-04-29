@@ -33,13 +33,12 @@ foreach ($Item in $Full) {
 if ($Exts.Contains([String]::Empty)) {
 	$Exts[$Exts.IndexOf([String]::Empty)] = '(No Extension)'
 }
-
+[Console]::WriteLine('────────────────────────────────────────────────────────────────')
 [Console]::WriteLine('── The following File Types / File Extensions have been found ──')
-[Console]::WriteLine('')
+[Console]::WriteLine('────────────────────────────────────────────────────────────────')
 foreach ($Type in $Exts) {
-	[Console]::WriteLine($Type)
+	[Console]::WriteLine('    ' + $Type)
 }
-[Console]::WriteLine('')
 [Console]::WriteLine('────────────────────────────────────────────────────────────────')
 [Console]::WriteLine("Total Files: $Size")
 [Console]::WriteLine('───────────────────────────────')
