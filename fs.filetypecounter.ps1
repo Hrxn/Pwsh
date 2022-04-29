@@ -60,7 +60,7 @@ else {
 		$ostr = [String]::Concat($lstr, $rstr)
 		Write-Host $ostr
 	}
-	$tstr = [String]::Concat('│', "Total Files: $Size".PadLeft(25), '│'.PadLeft(9))
+	$tstr = [String]::Concat('│', "Total Files: $Size".PadLeft(24), '│'.PadLeft(9))
 	Write-Host '├────────────────────────────────┼─────────────────────────────────┘'
 	Write-Host $tstr
 	Write-Host '└────────────────────────────────┘'
