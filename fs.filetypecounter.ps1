@@ -33,7 +33,7 @@ foreach ($Item in $Full) {
 	}
 }
 foreach ($Item in $Exts) {
-	$Outp.Add(@{Extension = $Item; Count = [UInt64] 0})
+	$Outp.Add([pscustomobject]@{Extension = $Item; Count = [UInt64] 0})
 }
 
 if ($Exts.Contains([String]::Empty)) {
