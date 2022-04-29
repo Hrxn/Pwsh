@@ -1,8 +1,8 @@
 [CmdletBinding(PositionalBinding = $false)]
 param
 (
-	[Parameter(Position = 0)][string] $Path = $PWD,
-	[Parameter()][switch] $Recurse
+	[Parameter()][switch] $Recurse,
+	[Parameter(Position = 0)][string] $Path = $PWD
 )
 
 if (($Path -eq '--help' -or $Path -eq '?') -or [String]::IsNullOrEmpty($Path)) {
