@@ -1,9 +1,9 @@
 [CmdletBinding(PositionalBinding = $false)]
 param
 (
-	[Parameter(Position = 0)][string] $Path = $PWD,
 	[Parameter()][switch] $Recurse,
-	[Parameter()][switch] $PassObject
+	[Parameter()][switch] $PassObject,
+	[Parameter(Position = 0)][string] $Path = $PWD
 )
 
 if (($Path -eq '--help' -or $Path -eq '?') -or [String]::IsNullOrEmpty($Path)) {
@@ -52,7 +52,7 @@ if ($PassObject) {
 }
 else {
 	Write-Host '┌────────────────────────────────┬─────────────────────────────────┐'
-	Write-Host '│      Filetpye (Extension)      │             Amount              │'
+	Write-Host '│      Filetype (Extension)      │             Amount              │'
 	Write-Host '├────────────────────────────────┼─────────────────────────────────┤'
 	foreach ($Entry in $Outp) {
 		$lstr = [String]::Concat('│', $Entry.Extension.PadLeft(18), '│'.PadLeft(15))
