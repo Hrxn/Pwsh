@@ -14,7 +14,7 @@ function Test-Directory ($Path) {
 }
 
 function Switch-SessionState {
-	param ([Parameter(Mandatory)][ValidateSet('Save', 'Change', 'Restore')][String] $Action)
+	param([Parameter(Mandatory)][ValidateSet('Save', 'Change', 'Restore')][string] $Action)
 	function Save-PSDriveState {
 		$PSDrivesSaved = [Collections.Generic.List[Object]]::new(26)
 		$CurrentFSList = Get-PSDrive -PSProvider FileSystem | Where-Object Name -like '?'
@@ -58,7 +58,7 @@ function Switch-SessionState {
 }
 
 function Get-Listing {
-	param ([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $ReadOnlyCollection)
+	param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $ReadOnlyCollection)
 	$ItmList, $DirItms = [System.Collections.Generic.List[System.Object]]::new(), $null
 	if (Test-Path -LiteralPath $Path -PathType Container) {
 		Push-Location -LiteralPath $Path -StackName 'list'
