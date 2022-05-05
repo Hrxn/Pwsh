@@ -1,8 +1,17 @@
-# -------------------------------------------------- Declarations for this entire Scope -------------------------------------------------- #
+# -------------------------------------------------- Declarations to set up this Script -------------------------------------------------- #
 $StatusVal = [Byte] 0
 $PathParam = [String]::Empty
 $PrimColor = [ConsoleColor]::White
 $ScndColor = [ConsoleColor]::DarkGray
+
+# This script assumes that you (like I do) have the usual default working directory for various processing tasks.
+# Contained therein is a /Temp subdirectory, which gets automatically cleaned, as intended by this script.
+# The path to this usual default working is defined by an environment variable.
+# Specify the name of this environment variable on the following line:
+$WDPathEnv = $Env:FSPS_Workdir
+
+# Running this script without a properly configured environment will still work.
+# It will simply display an error instead.
 
 # --------------------------------------------------------- Function Definitions --------------------------------------------------------- #
 function Print-Unava {
@@ -93,10 +102,9 @@ function Total-Print {
 function Count-Items {
 	param($Probe)
 	switch ($Probe) {
-		{$Probe -is [Object[]]}         {$Retv = [UInt32] $Probe.Count; break}
-		{$Probe -is [IO.DirectoryInfo]} {$Retv = [UInt32] 1; break}
-		{$Probe -is [IO.FileInfo]}      {$Retv = [UInt32] 1; break}
-		{$Probe -eq $null}              {$Retv = [UInt32] 0}
+		{$Probe -is [Object[]]}          {$Retv = [UInt32] $Probe.Count; break}
+		{$Probe -is [IO.FileSystemInfo]} {$Retv = [UInt32] 1; break}
+		{$Probe -eq $null}               {$Retv = [UInt32] 0}
 	}
 	return $Retv
 }
@@ -183,7 +191,6 @@ function Clean-Environ {
 
 # -------------------------------------------------------------- Begin Main -------------------------------------------------------------- #
 Write-Host -Object "[MNTNC] : Simple Cleaning Script -> Now Running..." -ForegroundColor $PrimColor
-$ErrActPrefSaved, $ConfrmPrefSaved = $ErrorActionPreference, $ConfirmPreference
 $ErrorActionPreference, $ConfirmPreference = 'Stop', 'None'
 Save-PSDriveState
 
@@ -193,11 +200,11 @@ $Result01 = Clean-Environ -Envpth $Env:windir
 
 # ------------------------------------------------------ Tasks: 02 / 04 ------------------------------------------------------ #
 Write-Host -Object "[02/04] : Cleaning user's temp directory in %LocalAppData%" -ForegroundColor $ScndColor
-$Result02 = Clean-Environ -Envpth $Env:LocalAppData
+$Result02 = Clean-Environ -Envpth $Env:LOCALAPPDATA
 
 # ------------------------------------------------------ Tasks: 03 / 04 ------------------------------------------------------ #
-Write-Host -Object "[03/04] : Cleaning primary temp processing directory (`$Env:FSWorkdir\Temp)" -ForegroundColor $ScndColor
-$Result03 = Clean-Environ -Envpth $Env:FSWorkdir
+Write-Host -Object "[03/04] : Cleaning primary temp processing directory (${WDPathEnv}\Temp)" -ForegroundColor $ScndColor
+$Result03 = Clean-Environ -Envpth $WDPathEnv
 
 # ------------------------------------------------------ Tasks: 04 / 04 ------------------------------------------------------ #
 $StatusMsg = "[04/04] : Cleaning 'tmp-*' and '*.tmp' content in %WinDir%\System32\config\systemprofile\AppData\Local"
@@ -231,12 +238,9 @@ Fancy-Print -Output $Result04
 # ------------------------------------------------ Process Results and Finish ------------------------------------------------ #
 $StatusMsg = "[MNTNC] : Simple Cleaning Script -> Cleaned all the things!"
 Write-Host -Object $StatusMsg -ForegroundColor $PrimColor
+
 $TotalRmvd = (Get-Variable -Name "Result*" -ValueOnly | Measure-Object -Sum).Sum
 Total-Print -Output $TotalRmvd
-
-$ErrorActionPreference, $ConfirmPreference = $ErrActPrefSaved, $ConfrmPrefSaved
-Remove-Variable -Name "Result*", "Items*", "CountInit*", "CountPost*"
-Remove-Variable -Name 'ErrActPrefSaved', 'ConfrmPrefSaved', 'StatusVal', 'StatusMsg', 'TotalRmvd', 'PathParam', 'PrimColor', 'ScndColor'
 Restore-PSDriveState
 
 $StatusMsg = "[MNTNC] : Simple Cleaning Script $($PSStyle.Underline)$($PSStyle.Foreground.Green)DONE$($PSStyle.Reset)"
