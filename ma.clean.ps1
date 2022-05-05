@@ -10,7 +10,7 @@ $ScndColor = [ConsoleColor]::DarkGray
 # Specify the name of this environment variable on the following line:
 $WDPathEnv = $Env:FSPS_Workdir
 
-# Running this script without a properly configured environment like described does still work, it does not break.
+# Running this script without a properly configured environment like described does still work, it won't go up in flames.
 # It will simply display an error message instead of the status message that would appear in this place.
 
 # --------------------------------------------------------- Function Definitions --------------------------------------------------------- #
