@@ -16,7 +16,7 @@ switch ($Command) {
 
 Write-Host -Object "[  -  ] The beginning, of this template-runmodes-switch.ps1 script file  .....  " -ForegroundColor 'DarkGray'
 
-# Example 1: implicit string type
+# Example 1: switch statement using implicit string type
 
 switch ($RunMode) {
 	Norun {Write-Host "   -    Incorrect parameter usage! | Display Info and Usage Message | $($PSStyle.Foreground.BrightCyan)command -> $command $($PSStyle.Reset)| $($PSStyle.Foreground.BrightCyan)args -> $args $($PSStyle.Reset)" -ForegroundColor 'White'; break}
