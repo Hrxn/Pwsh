@@ -1,17 +1,20 @@
-function Test-Directory ($Path) {
-	if ($null -eq $Path) {
+function Test-Directory ($Testvalue) {
+	if ($null -eq $Testvalue) {
 		return $false
 	}
-	elseif (-not (Test-Path -LiteralPath $Path)) {
+	elseif (-not (Test-Path -LiteralPath $Testvalue -IsValid)) {
 		return $false
 	}
-	elseif ((Get-Item -LiteralPath $Path) -isnot [System.IO.DirectoryInfo]) {
+	elseif (-not (Test-Path -LiteralPath $Testvalue -PathType Container)) {
 		return $false
 	}
 	else {
-		return (Test-Path -LiteralPath $Path -PathType Container)
+		return ((Get-Item -LiteralPath $Testvalue) -is [System.IO.DirectoryInfo])
 	}
 }
+
+
+
 
 function Switch-SessionState {
 	param([Parameter(Mandatory)][ValidateSet('Save', 'Change', 'Restore')][string] $Action)
@@ -57,23 +60,27 @@ function Switch-SessionState {
 	}
 }
 
-function Get-Listing {
+
+
+
+function Create-Listing {
 	param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $ReadOnlyCollection)
-	$ItmList, $DirItms = [System.Collections.Generic.List[System.Object]]::new(), $null
 	if (Test-Path -LiteralPath $Path -PathType Container) {
+		$ItmList, $DirItms = [System.Collections.Generic.List[System.Object]]::new(), $null
 		Push-Location -LiteralPath $Path -StackName 'list'
 		if ($PWD.Provider.Name -ceq 'FileSystem') {
 			if ($Force) {
 				$DirItms = Get-ChildItem -Force
-			}
-			else {
+			} else {
 				$DirItms = Get-ChildItem
 			}
 		}
 		Pop-Location -StackName 'list'
+	} else {
+		return
 	}
 	if ($DirItms -is [System.Object[]]) {
-		$ItmList = [System.Collections.Generic.List[System.Object]]::new($DirItms)
+		$ItmList.AddRange($DirItms)
 	} elseif ($DirItms -is [System.IO.FileSystemInfo]) {
 		$ItmList.Add($DirItms)
 	}
