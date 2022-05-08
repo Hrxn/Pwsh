@@ -63,7 +63,7 @@ function Switch-SessionState {
 
 
 
-function Create-Listing {
+function Create-GciListing {
 	param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $ReadOnlyCollection)
 	if (Test-Path -LiteralPath $Path -PathType Container) {
 		$ItmList, $DirItms = [System.Collections.Generic.List[System.Object]]::new(), $null
@@ -77,6 +77,7 @@ function Create-Listing {
 		}
 		Pop-Location -StackName 'list'
 	} else {
+		Write-Host -Object "Error: The given path ""$Path"" could not be found!" -ForegroundColor DarkRed
 		return
 	}
 	if ($DirItms -is [System.Object[]]) {
@@ -96,7 +97,7 @@ function Create-Listing {
 function Create-DirListing {
 	param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $Recurse, [switch] $ReadOnlyCollection)
 	if (Test-Path -LiteralPath $Path -PathType Container) {
-		$ItmList, $DirItms = [System.Collections.Generic.List[System.IO.FileSystemInfo]]::new(), $null
+		$ItmList = [System.Collections.Generic.List[System.IO.FileSystemInfo]]::new()
 		$EO = [System.IO.EnumerationOptions]::new()
 		$DO = Get-Item -LiteralPath $Path
 		if ($DO -is [System.IO.DirectoryInfo]) {
@@ -109,6 +110,7 @@ function Create-DirListing {
 			$DirItms = $DO.GetFileSystemInfos('*', $EO)
 		}
 	} else {
+		Write-Host -Object "Error: The given path ""$Path"" could not be found!" -ForegroundColor DarkRed
 		return
 	}
 	$ItmList.AddRange($DirItms)
