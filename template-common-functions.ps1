@@ -66,7 +66,7 @@ function Switch-SessionState {
 function Create-Listing {
 	param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $ReadOnlyCollection)
 	if (Test-Path -LiteralPath $Path -PathType Container) {
-		$ItmList, $DirItms = [System.Collections.Generic.List[System.Object]]::new(), $null
+		$ItmList, $DirItms = [System.Collections.Generic.List[System.IO.FileSystemInfo]]::new(), $null
 		Push-Location -LiteralPath $Path -StackName 'list'
 		if ($PWD.Provider.Name -ceq 'FileSystem') {
 			if ($Force) {
