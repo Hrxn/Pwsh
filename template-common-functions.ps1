@@ -90,3 +90,30 @@ function Create-Listing {
 	Write-Output $ItmList -NoEnumerate
 }
 
+
+
+
+function Create-DirListing {
+	param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string] $Path, [switch] $Force, [switch] $Recurse, [switch] $ReadOnlyCollection)
+	if (Test-Path -LiteralPath $Path -PathType Container) {
+		$ItmList, $DirItms = [System.Collections.Generic.List[System.IO.FileSystemInfo]]::new(), $null
+		$EO = [System.IO.EnumerationOptions]::new()
+		$DO = Get-Item -LiteralPath $Path
+		if ($DO -is [System.IO.DirectoryInfo]) {
+			if ($Force) {
+				$EO.AttributesToSkip = [System.IO.FileAttributes]::Device
+			}
+			if ($Recurse) {
+				$EO.RecurseSubdirectories = $true
+			}
+			$DirItms = $DO.GetFileSystemInfos('*', $EO)
+		}
+	} else {
+		return
+	}
+	$ItmList.AddRange($DirItms)
+	if ($ReadOnlyCollection) {
+		$ItmList = $ItmList.AsReadOnly()
+	}
+	Write-Output $ItmList -NoEnumerate
+}
