@@ -599,14 +599,11 @@ function Check-Start ($BaseDir) {
 		if ($null -eq $BaseDirContent) {
 			Show-Error 2
 		}
-		else {
-			switch ($BaseDirContent) {
-				{($BaseDirContent | Where-Object {$_.PSIsContainer} | Measure-Object).Count -le 2} {Show-Error 3}
-				{($BaseDirContent -is [IO.FileSystemInfo])}                                        {Show-Error 4}
-
-			}
-			Start-MusicSortSteps $BaseDir
+		switch ($BaseDirContent) {
+			{($_ | Where-Object {$_.PSIsContainer} | Measure-Object).Count -le 2} {Show-Error 3}
+			{($_ -is [IO.FileSystemInfo])}                                        {Show-Error 4}
 		}
+		Start-MusicSortSteps $BaseDir
 	}
 	else {
 		Show-Error 1
