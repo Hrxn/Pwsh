@@ -36,7 +36,7 @@ if ($MpvOptions) {
 [Console]::WriteLine("[mp.ipc] mpv IPC server instance (pipe name: ""$IPCPipeName"") is now starting...")
 [Console]::TreatControlCAsInput = $true
 
-Invoke-Expression -Command $MpvStartCmd
+Invoke-Expression $MpvStartCmd
 
 [Console]::Title = $SavedCnslwTitle
 [Console]::WriteLine("[mp.ipc] mpv IPC server instance (pipe name: ""$IPCPipeName"") just exited...")
