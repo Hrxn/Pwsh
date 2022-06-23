@@ -26,7 +26,7 @@ $Cntr = [UInt64] 0
 foreach ($Read in [System.IO.File]::ReadLines($File)) {
 	$Cntr += 1
 	$Line = $Read.Trim()
-	if (-not ($Line.StartsWith('#') -or $Line.StartsWith('-') -or [String]::IsNullOrEmpty($Line))) {
+	if (-not ($Line.StartsWith('#') -or $Line.StartsWith('-') -or [System.String]::IsNullOrEmpty($Line))) {
 		& $Proc $Line
 	}
 	Write-Progress -Activity "Infile handling in progress..." -Status "Processing of $Size entries - Done: $Cntr" -PercentComplete (($Cntr / $Size) * 100)
