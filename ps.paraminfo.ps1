@@ -32,7 +32,7 @@ If the script is the last command in the pipeline, the objects are displayed in 
 [CmdletBinding()]
 [OutputType('PSParameterInfo')]
 
-param (
+param(
 	[Parameter(
 				Position = 0,
 				Mandatory,
