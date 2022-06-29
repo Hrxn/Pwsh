@@ -1,6 +1,6 @@
 ## Hrxn/pwsh
 
-PowerShell scripts, now live on the public Internet!
+Hrxn's PowerShell scripts, now live on the public Internet!
 
 Please be aware:  
 This is still a work-in-progress.  
@@ -29,7 +29,7 @@ The primary intended purpose of this entire collection is usage in an interactiv
 Considering that startup and initialization time is a longstanding issue with PowerShell, the priority in this case here seems quite clear.
 PowerShell includes many integrated modules that are not loaded by default and are only delay-loaded optionally.
 I think this is a pretty good demonstration of the issue at hand, notwithstanding the benefits that the module approach still has.
-But I've run some own tests here, and I could not measure any improvement over simple script files which simply reside on the local filesystem.
+But I've run some own tests here, and I could not measure any improvement over simple script files which just reside on the local filesystem and are accessed via your `PATH`.
 
 #### Goals:
 - Make terminal life easier and more joyful.
