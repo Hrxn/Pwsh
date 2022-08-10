@@ -1,5 +1,5 @@
 function Test-Directory ($Testvalue) {
-	if ($null -eq $Testvalue) {
+	if (($null -eq $Testvalue) -or (($Testvalue | Measure-Object).Count -eq 0)) {
 		return $false
 	}
 	elseif (-not (Test-Path -LiteralPath $Testvalue -IsValid)) {
@@ -10,6 +10,134 @@ function Test-Directory ($Testvalue) {
 	}
 	else {
 		return ((Get-Item -LiteralPath $Testvalue -Force) -is [System.IO.DirectoryInfo])
+	}
+}
+
+
+
+
+function Test-DirectorySimple ($Test) {
+	if (-not (Test-Path -LiteralPath $Test -PathType Container)) {
+		return $false
+	}
+	else {
+		return ((Get-Item -LiteralPath $Test -Force) -is [System.IO.DirectoryInfo])
+	}
+}
+
+
+
+
+function Test-DirectoryPattern ($Testvalue) {
+	function Test-DirectoryPatternEntry ($Pattern) {
+		if ([WildcardPattern]::ContainsWildcardCharacters($Pattern)) {
+			$ResolvedSet = Resolve-Path -Path $Pattern
+			if ($null -eq $ResolvedSet) {
+				return $false
+			}
+			else {
+				foreach ($Entry in $ResolvedSet) {
+					if (-not (Test-Directory $Entry)) {
+						return $false
+					}
+				}
+				return $true
+			}
+		}
+		else {
+			return (Test-Directory $Pattern)
+		}
+	}
+	$ValueCount = ($Testvalue | Measure-Object).Count
+	if ($ValueCount -eq 0) {
+		return $false
+	}
+	if ($ValueCount -eq 1) {
+		return (Test-DirectoryPatternEntry $Testvalue)
+	}
+	if ($ValueCount -gt 1) {
+		foreach ($Entry in $Testvalue) {
+			if (-not (Test-DirectoryPatternEntry $Entry)) {
+				return $false
+			}
+		}
+		return $true
+	}
+}
+
+
+
+
+function Test-PathSet ([System.String[]] $PathSet) {
+	$Caller = (Get-Variable MyInvocation -Scope 1).Value.MyCommand.Name
+	if ($Caller -eq '') {
+		$Caller = 'Test-PathSet'
+		$RetBln = $false
+	}
+	else {
+		$RetBln = $true
+	}
+	$SetCnt = ($PathSet | Measure-Object).Count
+	if ($SetCnt -eq 0) {
+		Write-Host "[$Caller] Error: No path set has been specified!" -ForegroundColor DarkRed
+		if ($RetBln) {return $false} else {return}
+	}
+	elseif ($SetCnt -eq 1) {
+		return (Test-Directory $PathSet)
+	}
+	else {
+		foreach ($PathEntry in $PathSet) {
+			if (-not (Test-Directory $PathEntry)) {
+				return $false
+			}
+		}
+		return $true
+	}
+}
+
+
+
+
+function Get-PathSet ([System.String[]] $PathSet) {
+	$Caller = (Get-Variable MyInvocation -Scope 1).Value.MyCommand.Name
+	if ($Caller -eq '') {
+		$Caller = 'Get-PathSet'
+		$RetBln = $false
+	}
+	else {
+		$RetBln = $true
+	}
+	$SetCnt = ($PathSet | Measure-Object).Count
+	if ($SetCnt -eq 0) {
+		Write-Host "[$Caller] Error: No path set has been specified!" -ForegroundColor DarkRed
+		if ($RetBln) {return $false} else {return}
+	}
+	elseif ($SetCnt -eq 1) {
+		if (Test-Directory $PathSet) {
+			return $PathSet
+		}
+		else {
+			Write-Host "[$Caller] Error: Invalid path argument specified!" -ForegroundColor DarkRed
+			if ($RetBln) {return $false} else {return}
+		}
+	}
+	else {
+		$TestedPathSet = [System.Collections.Generic.List[System.String]]::new($SetCnt)
+		foreach ($PathEntry in $PathSet) {
+			if (-not [System.IO.Path]::EndsInDirectorySeparator($PathEntry)) {
+				$PathEntry = [System.String]::Concat($PathEntry, [System.IO.Path]::DirectorySeparatorChar)
+			}
+			if ((Test-Directory $PathEntry) -and (-not ($TestedPathSet.Contains($PathEntry)))) {
+				$TestedPathSet.Add($PathEntry)
+			}
+		}
+		if ($TestedPathSet.Count -eq 0) {
+			Write-Host "[$Caller] Error: No valid path is contained in the path set!" -ForegroundColor DarkRed
+			if ($RetBln) {return $false} else {return}
+		}
+		else {
+			return $TestedPathSet
+		}
 	}
 }
 
