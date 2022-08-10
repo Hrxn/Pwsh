@@ -9,7 +9,7 @@ function Test-Directory ($Testvalue) {
 		return $false
 	}
 	else {
-		return ((Get-Item -LiteralPath $Testvalue) -is [System.IO.DirectoryInfo])
+		return ((Get-Item -LiteralPath $Testvalue -Force) -is [System.IO.DirectoryInfo])
 	}
 }
 
