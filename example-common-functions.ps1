@@ -1,4 +1,4 @@
-function ConvertTo-FileSystemPath ($PSPath) {
+function Convert-FileSystemPath ($PSPath) {
 	$PSProvider = $null
 	$Result = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($PSPath, [ref]$PSProvider, [ref]$null)
 	if($PSProvider.ImplementingType -eq [Microsoft.PowerShell.Commands.FileSystemProvider]) {
