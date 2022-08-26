@@ -260,3 +260,47 @@ function Create-DirListing {
 	}
 	Write-Output $ItmList -NoEnumerate
 }
+
+
+
+
+function Confirm-Option ([string] $Message) {
+	$basecolr = $PSStyle.Foreground.BrightWhite
+	$accentc1 = $PSStyle.Foreground.BrightBlue
+	$accentc2 = $PSStyle.Foreground.Green
+	while ($true) {
+		Write-Host -Object "${basecolr}${Message} ${accentc1}[y/n] ${accentc2}> " -NoNewline
+		switch (Read-Host) {
+		'y' { return $true }
+		'n' { return $false }
+		}
+	}
+}
+
+
+
+
+function Select-Item ([string[]] $Options = @(''), [string] $Name = 'Entry') {
+	function Is-Numeric ($Value) {
+		return $Value -match "^\d+"
+	}
+	$InvalidInput = $false
+	$Table = $Options | ForEach-Object -Begin { $Index = 1 } { [pscustomobject]@{ Option = $Index; $Name = $_ }; $Index++ } | Out-String
+	while ($true) {
+		Write-Host $Table
+		if ($InvalidInput) {
+			Write-Host "Error: Please select a number between 1 and $($Options.length)!`n" -ForegroundColor DarkRed
+		}
+		Write-Host 'Select one of the options listed : ' -NoNewline
+		$Choice = Read-Host
+		if (Is-Numeric $Choice) {
+			$Index = ([int] $Choice) - 1
+			if ($Index -ge 0 -and $Index -lt $Options.Length) {
+				return ([string] $Options[$Index])
+			}
+		}
+		$InvalidInput = $true
+		Clear-Host
+	}
+}
+
