@@ -289,7 +289,7 @@ function Select-Item ([string[]] $Options = @(''), [string] $Name = 'Entry') {
 	while ($true) {
 		Write-Host $Table
 		if ($InvalidInput) {
-			Write-Host "Error: Please select a number between 1 and $($Options.length)!`n" -ForegroundColor DarkRed
+			Write-Host "Error: Please select a number between 1 and $($Options.Length)!`n" -ForegroundColor DarkRed
 		}
 		Write-Host 'Select one of the options listed : ' -NoNewline
 		$Choice = Read-Host
