@@ -4,11 +4,11 @@ $PathParam = [String]::Empty
 $PrimColor = [ConsoleColor]::White
 $ScndColor = [ConsoleColor]::DarkGray
 
-# This script assumes that you (like I do) have the usual default working directory for various processing tasks.
-# Contained therein is a /Temp subdirectory, which gets automatically cleaned, as intended by this script.
-# The path to this usual default working is defined by an environment variable.
+# This script assumes that you (like the author does) have the usual default working directory for various processing tasks.
+# Contained therein is a `/Temp/` subdirectory, destined to get automatically cleaned, as implemented by this script.
+# The path to this aforementioned default working directory is defined by an environment variable.
 # Specify the name of this environment variable on the following line:
-$WDPathEnv = $Env:FSPS_Workdir
+$WDPathEnv = $Env:FESP_Workdir
 
 # Running this script without a properly configured environment like described does still work, it won't go up in flames.
 # It will simply display an error message instead of the status message that would appear in this place.
