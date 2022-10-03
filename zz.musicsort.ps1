@@ -366,7 +366,7 @@ function Create-NameSetCategories ($Refdir, $NameSet) {
 	Push-Location -LiteralPath $Refdir
 	foreach ($DirName in $NameSet) {
 		if (-not (Test-Path -LiteralPath $DirName -PathType Container)) {
-			New-Item -Name $DirName -ItemType 'Directory'
+			$null = New-Item -Name $DirName -ItemType 'Directory'
 		}
 	}
 	Pop-Location
@@ -533,7 +533,7 @@ function Sort-FinishedDirectories ($Refdir) {
 			$IntDirPth = Join-Path $Refdir $Interpret
 			$SetDirPth = Join-Path $IntDirPth $MusicSetd
 			if (-not (Test-Path -LiteralPath $IntDirPth -PathType Container)) {
-				New-Item -Path $IntDirPth -ItemType 'Directory'
+				$null = New-Item -Path $IntDirPth -ItemType 'Directory'
 			}
 			if (-not (Test-Path -LiteralPath $SetDirPth -PathType Container)) {
 				Rename-Item -Path $InitialName -NewName $MusicSetd
@@ -546,7 +546,7 @@ function Sort-FinishedDirectories ($Refdir) {
 								" the '+Unt' category directory.`n-------------------`n")
 				Add-Content -Path (Join-Path '..' '+Issues' 'Issuelog_PreviouslyExisting.txt') -Value $LogfileMsg
 				if (-not (Test-Path -Path (Join-Path '..' '+Unt') -PathType Container)) {
-					New-Item -Path (Join-Path '..' '+Unt') -ItemType 'Directory'
+					$null = New-Item -Path (Join-Path '..' '+Unt') -ItemType 'Directory'
 				}
 				if (-not (Test-Path -Path (Join-Path '..' '+Unt' $InitialName) -PathType Container)) {
 					Move-Item -Path $InitialName -Destination (Convert-Path (Join-Path '..' '+Unt'))
