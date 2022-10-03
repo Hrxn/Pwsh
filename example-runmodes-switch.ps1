@@ -7,10 +7,11 @@ param
 enum RunModeType {Norun; Infos; Start}
 
 $InfoCmd = 'help', 'info', '--help', '--info', '?'
+
 switch ($Command) {
-	{$Command -eq 'start' -and (-not ($script:args.Count -gt 0))} {$RunMode = [RunModeType]::Start}
-	{$Command -in $InfoCmd -or $Help}                             {$RunMode = [RunModeType]::Infos}
-	default                                                       {$RunMode = [RunModeType]::Norun}
+	{$_ -eq 'start' -and (-not ($script:args.Count -gt 0))} {$RunMode = [RunModeType]::Start}
+	{$_ -in $InfoCmd -or $Help}                             {$RunMode = [RunModeType]::Infos}
+	default                                                 {$RunMode = [RunModeType]::Norun}
 }
 
 
