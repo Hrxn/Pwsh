@@ -5,7 +5,7 @@ $PrimColor = [ConsoleColor]::White
 $ScndColor = [ConsoleColor]::DarkGray
 
 # This script assumes that you (like the author does) have the usual default working directory for various processing tasks.
-# Contained therein is a `/Temp/` subdirectory, destined to get automatically cleaned, as implemented by this script.
+# Contained therein is a `Temp` subdirectory, destined to get automatically cleaned, as implemented by this script.
 # The path to this aforementioned default working directory is defined by an environment variable.
 # Specify the name of this environment variable on the following line:
 $WDPathEnv = $Env:FESP_Workdir
@@ -239,7 +239,7 @@ Fancy-Print -Output $Result04
 $StatusMsg = "[MNTNC] : Simple Cleaning Script -> Cleaned all the things!"
 Write-Host -Object $StatusMsg -ForegroundColor $PrimColor
 
-$TotalRmvd = (Get-Variable -Name "Result*" -ValueOnly | Measure-Object -Sum).Sum
+$TotalRmvd = (Get-Variable -Name "Result*" -ValueOnly -Scope 'Script' | Measure-Object -Sum).Sum
 Total-Print -Output $TotalRmvd
 Restore-PSDriveState
 
