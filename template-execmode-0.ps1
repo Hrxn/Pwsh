@@ -90,7 +90,7 @@ function Show-Status ([String] $ID, [String[]] $Text) {
 	Write-Host -Object $Output
 }
 
-function Send-Exception ([string] $ExceptionID, [string[]] $InfoCol) {
+function Send-Exception ([String] $ExceptionID, [String[]] $InfoCol) {
 	$NamePrfx = '[Scriptname]'
 	switch ($ExceptionID) {
 		'exc-info-01' {
@@ -119,13 +119,13 @@ function Send-Exception ([string] $ExceptionID, [string[]] $InfoCol) {
 	exit $ExitNumber
 }
 
-function Write-Log ([string] $LogID, [string[]] $InfoCol) {
+function Write-Log ([String] $LogID, [String[]] $InfoCol) {
 	if ($null -ne $Env:FSPS_Logdir) {
 		$Logdir = $Env:FSPS_Logdir
 	} else {
 		$Logdir = $PWD.Path
 	}
-	$Logdir = ([Path]::EndsInDirectorySeparator($Logdir)) ? $Logdir : [System.String]::Concat($Logdir, [Path]::DirectorySeparatorChar)
+	$Logdir = ([Path]::EndsInDirectorySeparator($Logdir)) ? $Logdir : [String]::Concat($Logdir, [Path]::DirectorySeparatorChar)
 	$Logsrc = (Split-Path $PSCommandPath -Leaf)
 	$Log_s1 = ('-' * 100) + "`n"
 	$Log_s2 = ('-' * 140) + "`n"
@@ -134,13 +134,13 @@ function Write-Log ([string] $LogID, [string[]] $InfoCol) {
 			$LogCatName = 'standard'
 			$LogHeading = ">> $((Get-Date).ToString()) << | $Logsrc -> logfile: $LogCatName"
 			$LogMessage = "Write something into a log file... like ""$($InfoCol[0])"" even if nothing special has happened?"
-			$LogContent = [System.String]::Concat($Log_s1, $LogHeading, "`n", $Log_s2, $LogMessage, "`n", $Log_s2)
+			$LogContent = [String]::Concat($Log_s1, $LogHeading, "`n", $Log_s2, $LogMessage, "`n", $Log_s2)
 		}
 		'log-issues' {
 			$LogCatName = 'issues'
 			$LogHeading = ">> $((Get-Date).ToString()) << | $Logsrc -> logfile: $LogCatName"
 			$LogMessage = "There has been a problem with the collection ""$($InfoCol)"" !"
-			$LogContent = [System.String]::Concat($Log_s1, $LogHeading, "`n", $Log_s2, $LogMessage, "`n", $Log_s2)
+			$LogContent = [String]::Concat($Log_s1, $LogHeading, "`n", $Log_s2, $LogMessage, "`n", $Log_s2)
 		}
 	}
 	Add-Content -Value $LogContent -LiteralPath "${Logdir}logfile__${Logsrc}__${LogCatName}.txt"
