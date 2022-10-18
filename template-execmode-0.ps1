@@ -59,52 +59,64 @@ else {
 	Write-Error -Message $ErrorMessage -Category InvalidOperation -ErrorId PSProviderUnsupported -ErrorAction Stop
 }
 
+function Show-Status ([String] $ID, [String[]] $Text) {
+	switch ($ID) {
+		{$_.StartsWith('exc')} {$vtC1 = $ccExce}
+		{$_.StartsWith('err')} {$vtC1 = $ccErro}
+		{$_.StartsWith('wrn')} {$vtC1 = $ccWarn}
+		{$_.StartsWith('inf')} {$vtC1 = $ccInfo}
+		{$_.StartsWith('log')} {$vtC1 = $ccLogm}
+		{$_.StartsWith('sts')} {$vtC1 = $ccHigh}
+	}
+	switch ($ID) {
+		'err-ca-01' { $Msg = "${vtC1}Error ${ccZero}: The specified argument for parameter ${ccSubt}-Path ${ccZero}" +
+			"(${ccShft}'${ccHigh}$($Text[1])${ccShft}'${ccZero}) does not exist as a valid literal path!"
+		}
+		'err-ca-02' { $Msg = "${vtC1}Error ${ccZero}: The specified argument for parameter ${ccSubt}-Path ${ccZero}" +
+			"(${ccShft}'${ccHigh}$($Text[1])${ccShft}'${ccZero}) does not refer to an existing directory!"
+		}
+		'wrn-ca-01' { $Msg = "${vtC1}Error ${ccZero}: The specified argument for parameter ${ccSubt}-Path ${ccZero}" +
+			"(${ccShft}'${ccHigh}$($Text[1])${ccShft}'${ccZero}) could not be resolved!"
+		}
+		'wrn-ca-02' { $Msg = "${vtC1}Error ${ccZero}: The specified argument for parameter ${ccSubt}-$($Text[1])${ccZero} " +
+			"(${ccShft}'${ccHigh}$($Text[2])${ccShft}'${ccZero}) could not be found as a file!"
+		}
+		'inf-ca-01'  { $Msg = "${vtC1}Info ${ccZero}: The file ${ccShft}'${ccHigh}$($Text[1])${ccShft}'${ccZero} has been " +
+			"successfully replaced with the file ${ccShft}'${ccHigh}$($Text[2])${ccShft}'${ccZero} while retaining its filename!"
+		}
+	}
+	$Prefix = "${ccCats}[${vtC1}$($Text[0])${ccCats}]${ccZero}"
+	$Output = [String]::Concat($Prefix, ' > ', $Msg)
+	Write-Host -Object $Output
+}
 
 function Send-Exception ([string] $ExceptionID, [string[]] $InfoCol) {
 	$NamePrfx = '[Scriptname]'
-	$ColrCatn = $PSStyle.Foreground.White
-	$ColrBase = $PSStyle.Foreground.BrightBlack
-	$ColrEmph = $PSStyle.Foreground.BrightWhite
 	switch ($ExceptionID) {
 		'exc-info-01' {
-			$ExcMsgPrfx = "${NamePrfx} ${ColrCatn}Info${ColrBase} :"
-			$ExcMessage = "${ExcMsgPrfx} Somehow ""${ColrEmph}$($InfoCol[0])${ColrBase}"" is not as expected."
-			$ExitNumber, $ExcBasecat = 1, 'DarkMagenta'
+			$ExcMsgPrfx = "${NamePrfx} ${ccInfo}Info${ccZero} :"
+			$ExcMessage = "${ExcMsgPrfx} Somehow ""${ccEmph}$($InfoCol[0])${ccZero}"" is not as expected."
+			$ExitNumber = 1
 		}
 		'exc-warn-01' {
-			$ExcMsgPrfx = "${NamePrfx} ${ColrCatn}Warning${ColrBase} :"
-			$ExcMessage = "${ExcMsgPrfx} It's ""${ColrEmph}$($InfoCol[1])${ColrBase}"" unavailable, " +
-							"while ""${ColrEmph}$($InfoCol[0])${ColrBase}"" happened."
-			$ExitNumber, $ExcBasecat = 2, 'DarkYellow'
+			$ExcMsgPrfx = "${NamePrfx} ${ccInfo}Warning${ccZeroBase} :"
+			$ExcMessage = "${ExcMsgPrfx} It's ""${ccEmph}$($InfoCol[1])${ccZero}"" unavailable, " +
+							"while ""${ccEmph}$($InfoCol[0])${ccZero}"" happened."
+			$ExitNumber = 2
 		}
 		'exc-erro-01' {
-			$ExcMsgPrfx = "${NamePrfx} ${ColrCatn}Exception${ColrBase} :"
-			$ExcMessage = "${ExcMsgPrfx} An error in ""${ColrEmph}$($InfoCol[0])${ColrBase}"" occurred."
-			$ExitNumber, $ExcBasecat = 3, 'DarkRed'
+			$ExcMsgPrfx = "${NamePrfx} ${ccInfo}Exception${ccZero} :"
+			$ExcMessage = "${ExcMsgPrfx} An error in ""${ccEmph}$($InfoCol[0])${ccZero}"" occurred."
+			$ExitNumber = 3
 		}
 		'exc-crit-01' {
-			$ExcMsgPrfx = "${NamePrfx} ${ColrCatn}Error${ColrBase} :"
+			$ExcMsgPrfx = "${NamePrfx} ${ccInfo}Error${ccZero} :"
 			$ExcMessage = "${ExcMsgPrfx} An critical error occured!"
-			$ExitNumber, $ExcBasecat = 4, 'Red'
+			$ExitNumber = 4
 		}
 	}
-	Write-Host -Object $ExcMessage -ForegroundColor $ExcBasecat
+	Show-Status -ID $ExceptionID -Text $InfoCol
 	exit $ExitNumber
-}
-
-function Show-Message ([string] $MessageID, [string[]] $InfoCol) {
-	$NamePrfx = '[Scriptname]'
-	$ColrBase = $PSStyle.Foreground.BrightBlack
-	$ColrEmph = $PSStyle.Foreground.BrightWhite
-	switch ($MessageID) {
-		'msg-info-01' {
-			$MessageStr = "${NamePrfx} I'm a message text."
-		}
-		'msg-hint-01' {
-			$MessageStr = "${NamePrfx} I'm an information hint."
-		}
-	}
-	Write-Host -Object $MessageStr
 }
 
 function Write-Log ([string] $LogID, [string[]] $InfoCol) {
@@ -133,7 +145,6 @@ function Write-Log ([string] $LogID, [string[]] $InfoCol) {
 	}
 	Add-Content -Value $LogContent -LiteralPath "${Logdir}logfile__${Logsrc}__${LogCatName}.txt"
 }
-
 
 function Show-Info {
 	Write-Host '<showing some info here>'
