@@ -34,16 +34,13 @@ param(
 	$InputParam,
 
 	[switch]
-	$Raise,
-
-	[switch]
 	$Exit
 
 )
 
 begin {
 
-	function Show-Status ([String] $ID, [String[]] $Text) {
+	function Show-Status ([string] $ID, [string[]] $Text) {
 		switch ($ID) {
 			{$_.StartsWith('exc')} {$vtC1 = $ccExce}
 			{$_.StartsWith('err')} {$vtC1 = $ccErro}
@@ -70,11 +67,11 @@ begin {
 			}
 		}
 		$Prefix = "${ccCats}[${vtC1}$($Text[0])${ccCats}]${ccZero}"
-		$Output = [String]::Concat($Prefix, ' > ', $Msg)
+		$Output = [string]::Concat($Prefix, ' > ', $Msg)
 		Write-Host -Object $Output
 	}
 
-	function Send-Exception ([String] $ExceptionID, [String[]] $InfoCol) {
+	function Send-Exception ([string] $ExceptionID, [string[]] $InfoCol) {
 		$NamePrfx = '[Scriptname]'
 		switch ($ExceptionID) {
 			'exc-info-01' {
@@ -104,9 +101,7 @@ begin {
 			}
 		}
 		Show-Status -ID $ExcMessage -Text $InfoCol
-		if ($Raise) {
-			throw $ExceptType
-		}
+		throw $ExceptType
 		if ($Exit) {
 			exit $ExitNumber
 		}
@@ -114,7 +109,7 @@ begin {
 
 
 
-	function Write-Log ([String] $LogID, [String[]] $InfoCol) {
+	function Write-Log ([string] $LogID, [string[]] $InfoCol) {
 		if ($null -ne $Env:FSPS_Logdir) {
 			$Logdir = $Env:FSPS_Logdir
 		} elseif ($PWD.Provider.Name -ceq 'FileSystem') {
@@ -150,8 +145,6 @@ process {
 	foreach ($Entry in $InputParam) {
 		#
 		#
-		#
-		#
 	}
 
 }
@@ -159,13 +152,9 @@ process {
 end {
 	#
 	#
-	#
-	#
 }
 
 clean {
-	#
-	#
 	#
 	#
 }
