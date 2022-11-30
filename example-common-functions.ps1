@@ -1,7 +1,7 @@
 function Convert-FileSystemPath ($PSPath) {
 	$PSProvider = $null
 	$Result = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($PSPath, [ref]$PSProvider, [ref]$null)
-	if($PSProvider.ImplementingType -eq [Microsoft.PowerShell.Commands.FileSystemProvider]) {
+	if ($PSProvider.ImplementingType -eq [Microsoft.PowerShell.Commands.FileSystemProvider]) {
 		$Result
 	} else {
 		Write-Error 'Not a filesystem provider'
