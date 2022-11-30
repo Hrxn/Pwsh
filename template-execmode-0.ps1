@@ -55,11 +55,11 @@ if ($PWD.Provider.Name -ceq 'FileSystem') {
 	[System.Environment]::CurrentDirectory = $PWD.Path
 }
 else {
-	$ErrorMessage = 'This script is designed only to work with the built-in FileSystem provider from PowerShell! Check your location!'
+	$ErrorMessage = 'This script is designed specifically for the built-in FileSystem provider included in PowerShell!'
 	Write-Error -Message $ErrorMessage -Category InvalidOperation -ErrorId PSProviderUnsupported -ErrorAction Stop
 }
 
-function Show-Status ([String] $ID, [String[]] $Text) {
+function Show-Status ([string] $ID, [string[]] $Text) {
 	switch ($ID) {
 		{$_.StartsWith('exc')} {$vtC1 = $ccExce}
 		{$_.StartsWith('err')} {$vtC1 = $ccErro}
@@ -86,11 +86,11 @@ function Show-Status ([String] $ID, [String[]] $Text) {
 		}
 	}
 	$Prefix = "${ccCats}[${vtC1}$($Text[0])${ccCats}]${ccZero}"
-	$Output = [String]::Concat($Prefix, ' > ', $Msg)
+	$Output = [string]::Concat($Prefix, ' > ', $Msg)
 	Write-Host -Object $Output
 }
 
-function Send-Exception ([String] $ExceptionID, [String[]] $InfoCol) {
+function Send-Exception ([string] $ExceptionID, [string[]] $InfoCol) {
 	$NamePrfx = '[Scriptname]'
 	switch ($ExceptionID) {
 		'exc-info-01' {
@@ -119,7 +119,7 @@ function Send-Exception ([String] $ExceptionID, [String[]] $InfoCol) {
 	exit $ExitNumber
 }
 
-function Write-Log ([String] $LogID, [String[]] $InfoCol) {
+function Write-Log ([string] $LogID, [string[]] $InfoCol) {
 	if ($null -ne $Env:FSPS_Logdir) {
 		$Logdir = $Env:FSPS_Logdir
 	} else {
