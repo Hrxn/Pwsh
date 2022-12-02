@@ -26,8 +26,8 @@ else {
 
 $Size = ($Full | Measure-Object).Count
 
-$Exts = [Collections.Generic.List[String]]::new()
-$Outp = [Collections.Generic.List[Object]]::new()
+$Exts = [System.Collections.Generic.List[System.String]]::new()
+$Outp = [System.Collections.Generic.List[System.Object]]::new()
 
 foreach ($Item in $Full) {
 	if (-not ($Exts.Contains($Item.Extension))) {
