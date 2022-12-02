@@ -58,11 +58,11 @@ else {
 	Write-Output '├────────────────────────────────┼─────────────────────────────────┤'
 	foreach ($Entry in $Outp) {
 		$lstr = [string]::Concat('│', $Entry.Extension.PadLeft(18), '│'.PadLeft(15))
-		$rstr = [string]::Concat(([String]$Entry.Count).PadLeft(18), '│'.PadLeft(16))
+		$rstr = [string]::Concat(([string]$Entry.Count).PadLeft(18), '│'.PadLeft(16))
 		$ostr = [string]::Concat($lstr, $rstr)
 		Write-Output $ostr
 	}
-	$tstr = [String]::Concat('│', "Total Files: $Size".PadLeft(24), '│'.PadLeft(9))
+	$tstr = [string]::Concat('│', "Total Files: $Size".PadLeft(24), '│'.PadLeft(9))
 	Write-Output '├────────────────────────────────┼─────────────────────────────────┘'
 	Write-Output $tstr
 	Write-Output '└────────────────────────────────┘'
