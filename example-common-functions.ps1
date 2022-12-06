@@ -29,7 +29,7 @@ function Test-Directory ($Testvalue) {
 
 
 
-function Test-DirectorySimple ($Test) {
+function Test-DirectorySimple ([ValidateNotNullOrEmpty()][string] $Test) {
 	if (-not (Test-Path -LiteralPath $Test -PathType Container)) {
 		return $false
 	}
