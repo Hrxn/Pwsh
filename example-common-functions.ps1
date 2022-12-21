@@ -316,7 +316,7 @@ function Select-Item ([string[]] $Options = @(''), [string] $Name = 'Entry') {
 		switch ($ID) {
 			'err-fn-no-requiredparam' { $Msg = "${ccCats}[${ccCC}Error${ccCats}]${ccZero} : You must provide a valid argument for the " +
 										"mandatory parameter ${ccShft}'${ccSubt}$($Text[0])${ccShft}'${ccZero}!"
-										$CustomOutput = $false; break
+						$CustomOutput = $false; break
 			}
 		}
 		if ($CustomOutput) {
