@@ -304,3 +304,28 @@ function Select-Item ([string[]] $Options = @(''), [string] $Name = 'Entry') {
 	}
 }
 
+
+
+	function Show-Status ([String] $ID, [String[]] $Text, [Byte] $Exit) {
+		switch ($ID) {
+			{$_.StartsWith('inf')} {$ccCC = $ccInfo; break}
+			{$_.StartsWith('wrn')} {$ccCC = $ccWarn; break}
+			{$_.StartsWith('err')} {$ccCC = $ccErro; break}
+			{$_.StartsWith('suc')} {$ccCC = $ccSccs; break}
+		}
+		switch ($ID) {
+			'err-fn-no-requiredparam' { $Msg = "${ccCats}[${ccCC}Error${ccCats}]${ccZero} : You must provide a valid argument for the " +
+										"mandatory parameter ${ccShft}'${ccSubt}$($Text[0])${ccShft}'${ccZero}!"
+										$CustomOutput = $false; break
+			}
+		}
+		if ($CustomOutput) {
+			$Output = $Msg
+		} else {
+			$Output = [String]::Concat("${ccCats}[${ccCC}$SlfName${ccCats}]${ccZero}", ' - ', $Msg)
+		}
+		Write-Host -Object $Output
+		if ($Exit) { exit $Exit }
+	}
+
+
