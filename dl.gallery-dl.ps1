@@ -1,4 +1,4 @@
-﻿<#PSScriptInfo
+<#PSScriptInfo
 
 .VERSION 1.0
 
@@ -34,11 +34,11 @@ Dependencies:
 .PARAMETER UrlToProcess
 URL(s) to be handed over to gallery-dl.
 
-.PARAMETER InteractiveMode
-Use to activate the interactive mode of this script.
-
 .PARAMETER Options
 Additional command-line options to provide for gallery-dl.
+
+.PARAMETER InteractiveMode
+Use to activate the interactive mode of this script.
 
 .EXAMPLE
 dl.gallery-dl https://www.example.com/gallery/1, https://www.example.com/id/aabbccdd00
@@ -58,16 +58,18 @@ https://github.com/Hrxn/pwsh
 
 #Requires -Version 7.0
 
+[CmdletBinding(PositionalBinding=$false)]
+
 param
 (
-	[Parameter(Position=0)]
+	[Parameter(Position=0, ValueFromRemainingArguments)]
 	[string[]] $UrlToProcess,
 
 	[Parameter()]
-	[switch] $InteractiveMode,
+	[string[]] $Options,
 
 	[Parameter()]
-	[string[]] $Options
+	[switch] $InteractiveMode
 )
 
 $SlfName = 'dl.gallery-dl'
@@ -125,8 +127,8 @@ function Show-Status ([String] $ID, [String[]] $Text, [Byte] $Exit) {
 			$CustomOutput = $false; break
 		}
 		'emp-fn-exits-notify' { $Msg =
-			"    ${ccCC}Note${ccZero}   : ${ccShft}'${ccHigh}$($SlfName)${ccShft}'${ccZero} made it through the " +
-			"batch of ${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} URLs, exit codes returned by " +
+			"    ${ccCC}Note${ccZero}   : ${ccShft}'${ccHigh}$($SlfName)${ccShft}'${ccZero} made it through a " +
+			"batch of ${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} URLs, but exit codes returned by " +
 			"${ccShft}'${ccHigh}$($AppName)${ccShft}'${ccZero} indicate issues. Please " +
 			"check the logs of ${ccShft}'${ccHigh}$($AppName)${ccShft}'${ccZero}!"
 			$CustomOutput = $false; break
