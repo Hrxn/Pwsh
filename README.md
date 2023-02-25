@@ -28,8 +28,6 @@ While PowerShell has usually been considered as a shell designed for scripting a
 The primary intended purpose of this entire collection is usage in an interactive shell environment.
 Considering that startup and initialization time is a longstanding issue with PowerShell, the priority in this case here seems quite clear.
 PowerShell includes many integrated modules that are not loaded by default and are only delay-loaded optionally.
-I think this is a pretty good demonstration of the issue at hand, notwithstanding the benefits that the module approach still has.
-But I've run some own tests here, and I could not measure any improvement over simple script files which just reside on the local filesystem and are accessed via your `PATH`.
 
 #### Goals:
 - Make terminal life easier and more joyful.
@@ -40,7 +38,6 @@ But I've run some own tests here, and I could not measure any improvement over s
 - Scratching my own itch.  
   The reason this came into existence.
 - Optimize for portability.
-- No trailing whitespace. Ever.
 
 #### Non-Goals:
 - Replicating functionality that already exists within the shell (poof, so many old scripts not needed anymore).
