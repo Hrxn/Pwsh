@@ -36,7 +36,7 @@
 	URL(s) to be handed over to gallery-dl.
 
 .PARAMETER Options
-	Additional command-line options to provide for gallery-dl (to be specified in PowerShell array syntax).
+	Additional command-line options to provide for gallery-dl (in PowerShell array notation, e.g. " dl.gallery-dl.ps1 -Opt '-o', 'keywords.bkey=Example' ")
 
 .PARAMETER InteractiveMode
 	Use to start the interactive mode of this script (this mode takes precedence over other mode options).
@@ -168,7 +168,7 @@ function Show-Status ([String] $ID, [String[]] $Text, [Byte] $Exit) {
 		}
 		'suc-fn-batch-finish' { $Msg =
 			"  ${ccCC}Success${ccZero}  : All done, yay! ${ccShft}'${ccHigh}$($SlfName)${ccShft}'${ccZero} has successfully processed " +
-			"the entire clipboard content of ${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} URLs!"
+			"the entire batch of ${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} URLs in a single run!"
 			$CustomOutput = $false; break
 		}
 		'suc-ln-entry-finish' { $Msg =
