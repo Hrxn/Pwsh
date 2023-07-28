@@ -48,7 +48,7 @@
 	Use to activate batch mode, all input is handed over to gallery-dl in a single invocation.
 
 .EXAMPLE
-	dl.gallery-dl https://www.example.com/gallery/1, https://www.example.com/id/aabbccdd00
+	dl.gallery-dl <URL-#1>, <URL-#2>
 
 .EXAMPLE
 	dl.gallery-dl -InteractiveMode
