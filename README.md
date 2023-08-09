@@ -33,10 +33,10 @@ PowerShell includes many integrated modules that are not loaded by default and a
 - Make terminal life easier and more joyful.
 - Optimize for interactive usage.
 - Cross-platform support.
-  To the extent that it's even possible at all. Some limitations still apply, obviously.  
-  All platforms that are not Windows should be considered untested so far.
+    - To the extent that it's even possible at all. Some limitations still apply, obviously.  
+    - All platforms that are not Windows should be considered untested so far.
 - Scratching my own itch.  
-  The reason this came into existence.
+    - The reason this came into existence.
 - Optimize for portability.
 
 #### Non-Goals:
@@ -45,7 +45,7 @@ PowerShell includes many integrated modules that are not loaded by default and a
 - GUI usage, even in the distant future, although possible with PowerShell.
 - Ugly optimizations and performance hacks.
 - Excessive hand-holding.  
-  I'm serious, do not expect to be spoonfed here. I'm trying to make these easily usable, but there is a line.  
+    - I'm serious, do not expect to be spoonfed here. I'm trying to make these easily usable, but there is a line.  
   If you don't know how to use CLI programs, or how to properly set up your environment variables, you are wrong here.
 
 Thank you for your attention. 
