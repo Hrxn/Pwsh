@@ -406,10 +406,10 @@ function Invoke-ClipboardMode {
 
 # ------ Main --------------------------------------------------------------------------------------------------------------------------------------------------
 
-if (-not (Get-Command -Name $AppName -CommandType Application -ErrorAction Ignore -OutVariable CmdInfo)) {
+if (-not (Get-Command -Name $AppName -CommandType Application -ErrorAction Ignore -OutVariable AppInfo)) {
 	Show-Status -ID 'exc-fn-no-targetcmd' -Text $AppName -Exit 1
 } else {
-	$AppPath = $CmdInfo.Source
+	$AppPath = $AppInfo[0].Source
 }
 
 if ($InteractiveMode) {
