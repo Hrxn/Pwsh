@@ -2,13 +2,13 @@
 param
 (
 	[Parameter()][switch] $Recurse,
-	[Parameter()][switch] $PassObject,
+	[Parameter()][switch] $ObjectOutput,
 	[Parameter(Position = 0)]
 	[string] $Path = $PWD
 )
 
 if (($Path -eq '--help' -or $Path -eq '?') -or [string]::IsNullOrWhiteSpace($Path)) {
-	Write-Output "[fs.filetypecounter] Usage: fs.filetypecounter.ps1 [-Path] <PATH> [-Recurse] [-PassObject]"
+	Write-Output "[fs.filetypecounter] Usage: fs.filetypecounter.ps1 [-Path] <PATH> [-Recurse] [-ObjectOutput]"
 	exit 0
 }
 if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
@@ -50,7 +50,7 @@ for ($i = 0; $i -lt $Size; $i++) {
 	$Outp[$aidx].Count = $cout++
 }
 
-if ($PassObject) {
+if ($ObjectOutput) {
 	return $Outp
 }
 else {
