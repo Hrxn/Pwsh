@@ -14,12 +14,10 @@
 
 .PROJECTURI https://github.com/Hrxn/Pwsh
 
-.EXTERNALSCRIPTDEPENDENCIES
-
 .RELEASENOTES
-	- 1.2 [2023-02-02] | Add clipboard mode, Add 'gallery-dl input as batch' option
-	- 1.0 [2023-01-03] | Initial public release
-
+	- 1.2 [2023-12-22] | Add 'SourceRepository' option, allows running gallery-dl from source code (requires Python interpreter)
+	- 1.1 [2023-02-02] | Add clipboard mode, Add 'gallery-dl input as batch' option
+	- 1.0 [2023-01-03] | Initial release
 #>
 
 <#
@@ -31,12 +29,16 @@
 
 	Dependencies:
 	1) gallery-dl (https://github.com/mikf/gallery-dl)
+	2) '-SourceRepository' option requires Python (https://www.python.org/)
 
 .PARAMETER UrlToProcess
 	URL(s) to be handed over to gallery-dl.
 
 .PARAMETER Options
-	Additional command-line options to provide for gallery-dl (in PowerShell array notation, e.g. " dl.gallery-dl.ps1 -Opt '-o', 'keywords.bkey=Example' ")
+	Additional command-line options to provide for gallery-dl (to be specified in PowerShell array syntax).
+
+.PARAMETER SourceRepository
+	Path to a local source code repository of gallery-dl. Runs via Python interpreter if a value is given.
 
 .PARAMETER InteractiveMode
 	Use to start the interactive mode of this script (this mode takes precedence over other mode options).
@@ -65,13 +67,15 @@
 
 #Requires -Version 7.0
 
-[CmdletBinding(PositionalBinding=$false)]
+[CmdletBinding(PositionalBinding = $false)]
 
 param(
-	[Parameter(Position=0, ValueFromRemainingArguments)]
+	[Parameter(Position = 0, ValueFromRemainingArguments)]
 	[String[]] $UrlToProcess,
 
 	[String[]] $Options,
+
+	[String] $SourceRepository,
 
 	[Switch] $InteractiveMode,
 
@@ -100,7 +104,12 @@ function Show-Status ([String] $ID, [String[]] $Text, [Byte] $Exit) {
 	switch ($ID) {
 		'exc-fn-no-targetcmd' { $Msg =
 			" ${ccCC}Exception${ccZero} : Unable to run this script because of a ${ccWarn}dependency error${ccZero}! The dependency " +
-			"${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} is not available on the local system!"
+			"${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} is not available or accessible on the local system!"
+			$CustomOutput = $false; break
+		}
+		'exc-fn-invalid-path' { $Msg =
+			" ${ccCC}Exception${ccZero} : Unable to run this script because of an ${ccWarn}invalid path${ccZero} that has been given! " +
+			"${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} does not contain a source code repository of gallery-dl!"
 			$CustomOutput = $false; break
 		}
 		'err-fn-batch-errors' { $Msg =
@@ -168,7 +177,7 @@ function Show-Status ([String] $ID, [String[]] $Text, [Byte] $Exit) {
 		}
 		'suc-fn-batch-finish' { $Msg =
 			"  ${ccCC}Success${ccZero}  : All done, yay! ${ccShft}'${ccHigh}$($SlfName)${ccShft}'${ccZero} has successfully processed " +
-			"the entire batch of ${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} URLs in a single run!"
+			"the entire clipboard content of ${ccShft}'${ccHigh}$($Text[0])${ccShft}'${ccZero} URLs!"
 			$CustomOutput = $false; break
 		}
 		'suc-ln-entry-finish' { $Msg =
@@ -193,19 +202,18 @@ function Show-Status ([String] $ID, [String[]] $Text, [Byte] $Exit) {
 		}
 		'inf-ln-process-line' { $Msg =
 			"    ${ccCC}Info${ccZero}   : Starting attempt at the following entry ... " +
-			"$("${ccCats}[ ${ccInfo}{0,4} ${ccCats}/ ${ccSccs}{1,4} ${ccCats}]${ccZero}" -f $Text[0], $Text[1]) " +
+			"$("${ccCats}[${ccInfo}{0,4}${ccCats} / ${ccSccs}{1,-4}${ccCats}]${ccZero}" -f $Text[0], $Text[1]) " +
 			"(${ccShft}'${ccHigh}$($Text[2])${ccShft}'${ccZero})"
 			$CustomOutput = $false; break
 		}
 		'inf-ln-entry-finish' { $Msg =
 			"    ${ccCC}Info${ccZero}   : Completed processing of following entry ... " +
-			"$("${ccCats}[ ${ccInfo}{0,4} ${ccCats}/ ${ccSccs}{1,4} ${ccCats}]${ccZero}" -f $Text[0], $Text[1]) " +
+			"$("${ccCats}[${ccInfo}{0,4}${ccCats} / ${ccSccs}{1,-4}${ccCats}]${ccZero}" -f $Text[0], $Text[1]) " +
 			"(${ccShft}'${ccHigh}$($Text[2])${ccShft}'${ccZero})"
 			$CustomOutput = $false; break
 		}
 		'inf-fn-show-options' { $Msg =
-			"    ${ccCC}Info${ccZero}   : The following options for gallery-dl have been set -> ${ccShft}'${ccHigh}" +
-			"$Text${ccShft}'${ccZero}."
+			"    ${ccCC}Info${ccZero}   : The following options for gallery-dl have been set -> ${ccShft}'${ccHigh}$Text${ccShft}'${ccZero}."
 			$CustomOutput = $false; break
 		}
 		'inf-op-mode-interac' {
@@ -291,14 +299,17 @@ function Show-Prompt {
 
 function Invoke-Application ([String] $Task) {
 	$AppArgs = [Collections.Generic.List[String]]::new()
-	$AppArgs.Add($Task)
 	if ($Options) {
 		foreach ($Entry in $Options) {
 			$AppArgs.Add($Entry)
 		}
 	}
-	$AppArgs = $AppArgs.ToArray()
-	& $AppPath @AppArgs
+	$AppArgs.Add($Task)
+	if (($AppPath | Measure-Object).Count -eq 2) {
+		& $AppPath[0] $AppPath[1] $AppArgs
+	} else {
+		& $AppPath $AppArgs
+	}
 	$script:AppExitStatus = $?
 }
 
@@ -319,8 +330,11 @@ function Invoke-Processing ([Array] $EntrySet) {
 				$AppArgs.Add($Element)
 			}
 		}
-		$AppArgs = $AppArgs.ToArray()
-		& $AppPath @AppArgs
+		if (($AppPath | Measure-Object).Count -eq 2) {
+			& $AppPath[0] $AppPath[1] $AppArgs
+		} else {
+			& $AppPath $AppArgs
+		}
 		$? ? (Show-Status -ID 'suc-fn-batch-finish' -Text $Count) : (Show-Status -ID 'err-fn-batch-errors')
 		if ($Valid -lt $Count) {
 			Show-Status -ID 'err-fn-invalid-entr' -Text @($Valid, $Count)
@@ -394,7 +408,7 @@ function Invoke-MultilineMode {
 
 function Invoke-ClipboardMode {
 	$ClipIn = Get-Clipboard
-	$ClipIn = foreach ($v in $ClipIn) { if (![String]::IsNullOrWhiteSpace($v)) {$v.Trim()} }
+	$ClipIn = foreach ($v in $ClipIn) { if (![String]::IsNullOrWhiteSpace($v)) { $v.Trim() } }
 	$Amount = ($ClipIn | Measure-Object).Count
 	if ($Amount -gt 0) {
 		Show-Status -ID 'inf-op-start-clipin' -Text $Amount
@@ -406,10 +420,25 @@ function Invoke-ClipboardMode {
 
 # ------ Main --------------------------------------------------------------------------------------------------------------------------------------------------
 
-if (-not (Get-Command -Name $AppName -CommandType Application -ErrorAction Ignore -OutVariable AppInfo)) {
-	Show-Status -ID 'exc-fn-no-targetcmd' -Text $AppName -Exit 1
+if ($SourceRepository) {
+	if (-not (Get-Command -Name 'python' -CommandType Application -ErrorAction Ignore -OutVariable CmdInfo)) {
+		Show-Status -ID 'exc-fn-no-targetcmd' -Text 'python' -Exit 1
+	} else {
+		if (-not ($SourceRepository.EndsWith('gallery_dl') -or $SourceRepository.EndsWith('gallery_dl' + [IO.Path]::DirectorySeparatorChar))) {
+			$SourceRepository = [IO.Path]::Join($SourceRepository, 'gallery_dl')
+		}
+		if (-not ([IO.Directory]::Exists([IO.Path]::GetFullPath($SourceRepository, $PWD.Path)))) {
+			Show-Status -ID 'exc-fn-invalid-path' -Text ($SourceRepository -replace '[/\\]?gallery_dl[/\\]?','') -Exit 2
+		} else {
+			$AppPath = $CmdInfo[0].Path, [IO.Path]::GetFullPath($SourceRepository, $PWD.Path)
+		}
+	}
 } else {
-	$AppPath = $AppInfo[0].Source
+	if (-not (Get-Command -Name $AppName -CommandType Application -ErrorAction Ignore -OutVariable CmdInfo)) {
+		Show-Status -ID 'exc-fn-no-targetcmd' -Text $AppName -Exit 1
+	} else {
+		$AppPath = $CmdInfo[0].Path
+	}
 }
 
 if ($InteractiveMode) {
@@ -418,22 +447,19 @@ if ($InteractiveMode) {
 		Show-Status -ID 'inf-fn-show-options' -Text $Options
 	}
 	Invoke-InteractiveMode
-}
-elseif ($ClipboardMode) {
+} elseif ($ClipboardMode) {
 	Show-Status -ID 'inf-op-mode-clipboa'
 	if ($Options) {
 		Show-Status -ID 'inf-fn-show-options' -Text $Options
 	}
 	Invoke-ClipboardMode
-}
-elseif ($UrlToProcess) {
+} elseif ($UrlToProcess) {
 	Show-Status -ID 'inf-op-start-argval' -Text $UrlToProcess.Count
 	if ($Options) {
 		Show-Status -ID 'inf-fn-show-options' -Text $Options
 	}
 	Invoke-Processing -EntrySet $UrlToProcess
-}
-else {
+} else {
 	Show-Status -ID 'inf-op-mode-pasteln'
 	if ($Options) {
 		Show-Status -ID 'inf-fn-show-options' -Text $Options
