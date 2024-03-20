@@ -20,7 +20,7 @@ $Path = Convert-Path -LiteralPath $Path
 
 if ($Recurse) {
 	$Full = Get-ChildItem $Path -Recurse -Force -File
-} 
+}
 else {
 	$Full = Get-ChildItem $Path -Force -File
 }
