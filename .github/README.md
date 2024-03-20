@@ -1,4 +1,4 @@
-## Hrxn/pwsh
+## Hrxn/Pwsh
 
 Hrxn's PowerShell scripts, now live on the public Internet!
 
