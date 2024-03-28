@@ -114,7 +114,7 @@ begin {
 	if ($SuppressedOnly -and $IncludeSuppressed) {
 		Show-Message ("`e[38;5;242m[`e[38;5;196mps.lint`e[38;5;242m]`e[38;5;242m[`e[38;5;196mError`e[38;5;242m] `e[38;5;231m- `e[38;5;196mERROR`e[38;5;231m -`e[0m Both " +
 			"`e[38;5;179m'`e[38;5;8m-SuppressedOnly`e[38;5;179m'`e[0m and `e[38;5;179m'`e[38;5;8m-IncludeSuppressed`e[38;5;179m'`e[0m have been specified: " +
-			"You can only use one of these flags at a time!")
+			'You can only use one of these flags at a time!')
 		exit 2
 	}
 	if ($Preset) {
@@ -123,7 +123,7 @@ begin {
 		} else {
 			Show-Message ("`e[38;5;242m[`e[38;5;196mps.lint`e[38;5;242m]`e[38;5;242m[`e[38;5;196mError`e[38;5;242m] `e[38;5;231m- `e[38;5;196mERROR`e[38;5;231m -`e[0m Provided " +
 				"value for the argument `e[38;5;179m'`e[38;5;41mPreset`e[38;5;179m'`e[0m: `e[38;5;179m'{0}`e[38;5;179m'`e[0m is not a preset file that exists!" -f $Preset)
-				exit 3
+			exit 3
 		}
 	} else {
 		$ScriptAnalyzerSettings = [System.IO.Path]::Join($PSScriptRoot, 'Preferences', 'Fesp.PowerShell.PSScriptAnalyzer.Preset.All.psd1')

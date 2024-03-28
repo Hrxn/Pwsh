@@ -64,6 +64,7 @@
         'PSUseUsingScopeModifierInNewRunspaces',
         'PSUseUTF8EncodingForHelpFile'
     )
+
     Rules = @{
         PSAlignAssignmentStatement = @{
             Enable = $true
@@ -74,7 +75,7 @@
         }
         PSAvoidLongLines = @{
             Enable = $true
-            MaximumLineLength = 140
+            MaximumLineLength = 180
         }
         PSAvoidOverwritingBuiltInCmdlets = @{
             PowerShellVersion = @('core-6.1.0-windows')
@@ -88,7 +89,7 @@
         PSPlaceCloseBrace = @{
             Enable = $true
             NoEmptyLineBefore = $true
-            NewLineAfter = $true
+            NewLineAfter = $false
             IgnoreOneLineBlock = $true
         }
         PSPlaceOpenBrace = @{
