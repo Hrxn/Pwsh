@@ -107,7 +107,9 @@
         }
         PSReviewUnusedParameter = @{
             CommandsToTraverse = @(
-                'Assert-Parameter'
+                'Where-Object',
+                'ForEach-Object',
+                'Test-Parameter'
             )
         }
         PSUseCompatibleCmdlets = @{
