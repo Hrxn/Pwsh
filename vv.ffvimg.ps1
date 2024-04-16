@@ -1,18 +1,18 @@
-if ($args.Count -lt 2) {
-	Write-Host "[vv.ffvimg] Usage: vv.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]"
+if (($null -eq $args[0]) -or ($null -eq $args[1])) {
+	Write-Output '[vv.ffvimg] Usage: vv.ffvimg.ps1 <filename> <start position in seconds> [<duration to process in seconds>]'
 } else {
 	$File = Get-Item $args[0]
-	$Dirn = "$($File.BaseName)-Images"
+	$Name = $File.BaseName
 	$tcst = $args[1]
-	if ($args.Count -eq 3) {
+	if ($null -ne $args[2]) {
 		$tcen = $args[2]
 	} else {
 		$tcen = 2
 	}
-	if (Test-Path -LiteralPath $Dirn -PathType Container) {
-		Write-Host "[vv.ffvimg] Info: Deleting previously existing directory ""$Dirn"" ..."
-		Remove-Item -LiteralPath $Dirn -Recurse -Force
+	if (Test-Path -LiteralPath $Name -PathType Container) {
+		Write-Output "[vv.ffvimg] Info: Deleting previously existing directory `"$Name`" ... "
+		Remove-Item -LiteralPath $Name -Recurse -Force
 	}
-	New-Item -Path '.' -Name $Dirn -ItemType 'Directory'
-	& ffmpeg -hide_banner -ss $tcst -t $tcen -i $File -c:v png ./$Dirn/%08d.png
+	New-Item -Path '.' -Name $Name -ItemType 'Directory' | Out-Null
+	& ffmpeg -ss $tcst -t $tcen -i $File -c:v png ./$Name/%08d.png
 }
