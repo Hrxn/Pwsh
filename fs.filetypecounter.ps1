@@ -34,8 +34,9 @@ foreach ($Item in $Full) {
 		$Exts.Add($Item.Extension)
 	}
 }
+
 foreach ($Item in $Exts) {
-	$Outp.Add([pscustomobject]@{Extension = $Item; Count = [UInt64]0})
+	$Outp.Add([pscustomobject]@{Extension = $Item; Count = [UInt64] 0})
 }
 
 if ($Exts.Contains([string]::Empty)) {
@@ -46,7 +47,7 @@ for ($i = 0; $i -lt $Size; $i++) {
 	$cext = $Full[$i].Extension
 	$aidx = $Exts.IndexOf($cext)
 	$cout = $Outp[$aidx].Count
-	$Outp[$aidx].Count = $cout++
+	$Outp[$aidx].Count = ++$cout
 }
 
 if ($ObjectOutput) {
