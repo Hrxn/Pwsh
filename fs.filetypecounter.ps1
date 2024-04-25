@@ -1,6 +1,5 @@
 [CmdletBinding(PositionalBinding = $false)]
-param
-(
+param(
 	[Parameter()][switch] $Recurse,
 	[Parameter()][switch] $ObjectOutput,
 	[Parameter(Position = 0)]
@@ -19,10 +18,10 @@ if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
 $Path = Convert-Path -LiteralPath $Path
 
 if ($Recurse) {
-	$Full = Get-ChildItem $Path -Recurse -Force -File
+	$Full = Get-ChildItem -LiteralPath $Path -Recurse -Force -File
 }
 else {
-	$Full = Get-ChildItem $Path -Force -File
+	$Full = Get-ChildItem -LiteralPath $Path -Force -File
 }
 
 $Size = ($Full | Measure-Object).Count
