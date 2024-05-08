@@ -126,7 +126,14 @@ begin {
 			exit 3
 		}
 	} else {
-		$ScriptAnalyzerSettings = [System.IO.Path]::Join($PSScriptRoot, 'Preferences', 'Fesp.PowerShell.PSScriptAnalyzer.Preset.All.psd1')
+		$IncludedSettingsPreset = [System.IO.Path]::Join($PSScriptRoot, 'Preferences', 'Fesp.PowerShell.PSScriptAnalyzer.Preset.All.psd1')
+		if ([System.IO.File]::Exists($IncludedSettingsPreset)) {
+			$ScriptAnalyzerSettings = $IncludedSettingsPreset
+		} else {
+			Show-Message ("`e[38;5;242m[`e[38;5;196mps.lint`e[38;5;242m]`e[38;5;242m[`e[38;5;196mError`e[38;5;242m] `e[38;5;231m- `e[38;5;196mERROR`e[38;5;231m -`e[0m The bundl" +
+				"ed PSScriptAnalyzer settings preset file was not found at the expected path: `e[38;5;179m'{0}`e[38;5;179m'`e[0m!" -f $IncludedSettingsPreset)
+			exit 4
+		}
 	}
 }
 
